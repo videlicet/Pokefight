@@ -1,24 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import allPokes from './routes/allPokes.js';
-import pokeDetail from './routes/pokeDetail.js';
-import pokeDetailPlus from './routes/pokeDetailPlus.js';
+import AllPokes from './routes/AllPokes.js';
+import PokeDetail from './routes/PokeDetail.js';
+import PokeDetailPlus from './routes/PokeDetailPlus.js';
 import reportWebVitals from './reportWebVitals.js';
 import './index.css';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <allPokes />,
+    element: <AllPokes />,
     children: [
       {
         path: "/pokemon/:id",
-        element: <pokeDetail />,
+        element: <PokeDetail />,
       },
       {
         path: "/pokemon/:id/:info",
-        element: <pokeDetailPlus />,
+        element: <PokeDetailPlus />,
       }
     ],
   },

@@ -1,6 +1,6 @@
 import '../App.css';
 
-function pokeDetailPlus() {
+function PokeDetailPlus() {
   return (
     <div className="App">
 
@@ -8,4 +8,4 @@ function pokeDetailPlus() {
   );
 }
 
-export default pokeDetailPlus;
+export default PokeDetailPlus;

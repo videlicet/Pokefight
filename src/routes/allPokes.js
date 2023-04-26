@@ -1,6 +1,6 @@
 import '../App.css';
 
-function allPokes() {
+function AllPokes() {
   return (
     <div className="App">
         <h1>All the pokemon</h1>
@@ -8,4 +8,4 @@ function allPokes() {
   );
 }
 
-export default allPokes;
+export default AllPokes;

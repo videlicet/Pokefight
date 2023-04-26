@@ -5,6 +5,8 @@ import Welcome from './routes/0_Welcome.js'
 import AllPokes from './routes/AllPokes.js';
 import PokeDetail from './routes/PokeDetail.js';
 import PokeDetailPlus from './routes/PokeDetailPlus.js';
+import PokeFight from './routes/2_PokeFight.js'
+
 import reportWebVitals from './reportWebVitals.js';
 import './index.css';
 
@@ -24,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/pokemon/:id/:info",
         element: <PokeDetailPlus />,
+      },
+      {
+        path: "/pokefight",
+        element: <PokeFight />,
       }
     ]
   }

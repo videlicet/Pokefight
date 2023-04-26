@@ -27,7 +27,6 @@ function AllPokes() {
     const [error, setError] = useState(null)
     const [allPokemon, setAllPokemon] = useState([])
     const [setTitle, fighters, setFighters] = useOutletContext()
-    // const [fighters, setFighters] = useState([]);
 
     const getData = () => {
         setLoading(true);
@@ -52,23 +51,22 @@ function AllPokes() {
       },[])
 
     function onSearch(e) {
-        console.log([allPokemon.find(i => i.name.english == e)])
         setAllPokemon([allPokemon.find(i => i.name.english == e)]);
     }
 
     function onAdd(event) {
         event.preventDefault()
-        let el = event.currentTarget.parentNode.getAttribute('id');
-        console.log('clicked')
+        let el = allPokemon.find(i => i.name.english == event.currentTarget.parentNode.getAttribute('id')) //event.currentTarget.parentNode.getAttribute('id')
         if (fighters.length >= 2 || event.currentTarget == null) return
         return setFighters(prev => [...prev, el])
     }
 
     function onDelete(event) {
         event.preventDefault();
-        if (fighters.length <= 0 || event.currentTarget == null) return
+        let el = allPokemon.find(i => i.name.english == event.currentTarget.parentNode.getAttribute('id'))
+        if (fighters.length <= 0) return
         if (fighters[0] == fighters[1]) return setFighters([fighters[0]])    
-        return setFighters(prev => prev.filter(e => e != event.currentTarget.parentNode.getAttribute('id')))
+        return setFighters(prev => prev.filter(e => e != el))
     }
 
     return (
@@ -84,7 +82,7 @@ function AllPokes() {
                             <Card title={e.name.english} hoverable='true' style={style}>
                                 <div className="category">
                                         <span>Type:</span>
-                                        <div>{e.type.map(e => <span>{e}</span>)}</div>
+                                        <div>{e.type.map((e, index) => <span key={index}>{e}</span>)}</div>
                                 </div>
                                 <div className="category">
                                     <span>Base:</span>
@@ -100,7 +98,7 @@ function AllPokes() {
                             </Card>
                         </Link>
                         {fighters.length < 2 && fighters.length >= 0 && <Button onClick={onAdd}>I choose you, {e.name.english}! {fighters.length}/2</Button>}
-                        {fighters.length > 0 &&  fighters.includes(e.name.english)  && <Button onClick={onDelete} style={{margin: '0 0 0 1rem'}}>Delete from Figthers</Button>} 
+                        {fighters.length > 0 &&  fighters.includes(e)  && <Button onClick={onDelete} style={{margin: '0 0 0 1rem'}}>Delete from Figthers</Button>} 
                     </div>
                     )}
                 </Col>

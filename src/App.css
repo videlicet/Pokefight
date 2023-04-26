@@ -13,3 +13,17 @@ span {
 a {
   font-weight: bold;
 }
+
+.breadcrumbs > * {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.breadcrumbs .crumb:after {
+  content: '>';
+  margin-left: 1rem;
+}
+
+.breadcrumbs .crumb:last-child:after {
+  display: none;
+}

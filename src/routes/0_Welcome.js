@@ -1,29 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Outlet } from 'react-router-dom';
-import { ConfigProvider, Layout, theme, Card, Row, Col, Typography} from 'antd';
-import { Footer, Header, Content } from 'antd/es/layout/layout.js';
+import { Outlet } from 'react-router-dom';
+import { ConfigProvider, Layout, theme, Typography} from 'antd';
 import '../App.css';
 
 const { Title } = Typography;
+const { Footer, Header, Content, Sider } = Layout;
 
-const style = { margin: '3rem 0' };
+const heaserStyle = { height: '7rem' };
+
+const siderStyle = {
+  textAlign: 'center',
+  color: 'white',
+  backgroundColor: '',
+};
 
 
 function AllPokes() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    
+    const [title, setTitle] = useState('Pokedex')
+    const [fighters, setFighters] = useState(['a', 'b']);
+
     return (
         <ConfigProvider
             theme={{
           algorithm: theme.darkAlgorithm,
         }}>
             <Layout>
-                <Header><Title>All the pokemon<br/></Title></Header>
-                <Content>
-                    <Outlet/>
-                </Content>
-                <Footer>           
+                <Header style={heaserStyle}><Title>Pokefight: {title}<br/></Title></Header>
+                <Layout>
+                  <Sider style={siderStyle}>
+                    <h2>Your fighters:</h2>
+                    {fighters.map(e => <div>{e}</div>)}
+                  </Sider>
+                  <Content>
+                      <Outlet context={[setTitle, fighters, setFighters]}/>
+                  </Content>
+                </Layout>    
+                <Footer>
                 </Footer>
             </Layout>
         </ConfigProvider>

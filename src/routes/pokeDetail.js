@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useOutletContext } from 'react-router-dom';
 import { ConfigProvider, Layout, theme, Card, Row, Col, Typography} from 'antd';
 import '../App.css';
 
@@ -11,6 +11,7 @@ function PokeDetail() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [thisPokemon, setThisPokemon] = useState([])
+    const [setTitle] = useOutletContext()
     let { id } = useParams();
 
     const getData = () => {
@@ -23,6 +24,7 @@ function PokeDetail() {
         .then(
           function(entries) {
               console.log(entries)
+              setTitle(`Details about ${entries[0].name.english}`);
               setThisPokemon(entries[0]);
           }
         )

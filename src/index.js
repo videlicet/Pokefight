@@ -11,17 +11,15 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <AllPokes />,
-    children: [
-      {
-        path: "/pokemon/:id",
-        element: <PokeDetail />,
-      },
-      {
-        path: "/pokemon/:id/:info",
-        element: <PokeDetailPlus />,
-      }
-    ],
   },
+  {
+    path: "/pokemon/:id",
+    element: <PokeDetail />,
+  },
+  {
+    path: "/pokemon/:id/:info",
+    element: <PokeDetailPlus />,
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

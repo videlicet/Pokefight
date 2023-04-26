@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllPokemon, getOnePokemon, getOnePokemonInfo} from '../controllers/orders.js';
+import { getAllPokemon, getOnePokemon, getOnePokemonInfo} from '../controllers/pokemon.js';
 
 const pokemonRouter = Router();
 

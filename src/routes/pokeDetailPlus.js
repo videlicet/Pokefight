@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { ConfigProvider, Layout, theme, Card, Row, Col, Typography} from 'antd';
 import '../App.css';
+
+const { Title } = Typography;
+
+const style = { margin: '3rem 0' };
 
 function PokeDetailPlus() {
     const [loading, setLoading] = useState(true)
@@ -36,38 +41,18 @@ function PokeDetailPlus() {
 
 
     return (
-        <div className="App">
-            <h1>Specific pokemon</h1>
-            <div>
-                {Object.keys(thisStat).length > 0 &&
-                <div>
-                    { 
-                      Object.keys(thisStat).map(key => <span>{key.toUpperCase()} {thisStat[key]}</span>)
-                    }
-                </div>}
-            </div>
-        </div>
+      <Row gutter={16} >
+        <Col className="gutter-row" span={10} offset={8}>
+          {Object.keys(thisStat).length > 0 &&
+          <Card title={info[0].toUpperCase()+info.slice(1)} hoverable='true' style={style}>
+            { 
+              Object.keys(thisStat).map(key => <span>{info != 'type' && key[0].toUpperCase() + key.slice(1)}: {thisStat[key]}</span>)
+            }
+            </Card>
+            }
+        </Col>
+      </Row>
     );
 }
 
 export default PokeDetailPlus;
-
-
-/**
-<Link to={`/pokemon/${thisPokemon.id}/name`}>{thisPokemon.name.english}</Link>
-                    <div>
-                        <Link to={`/pokemon/${thisPokemon.id}/type`}>Type:</Link>
-                        <div>{thisPokemon.type.map(e => <span>{e}</span>)}</div>
-                    </div>
-                    <div>
-                        <Link to={`/pokemon/${thisPokemon.id}/base`}>Base:</Link>
-                        <div>
-                            <span>HP: {thisPokemon.base.HP}</span>
-                            <span>Attack: {thisPokemon.base.Attack}</span>
-                            <span>Defense: {thisPokemon.base.Defense}</span>
-                            <span>Sp. Attack: {thisPokemon.base['Sp. Attack']}</span>
-                            <span>Sp. Defense: {thisPokemon.base['Sp. Defense']}</span>
-                            <span>Speed: {thisPokemon.base.Speed}</span>
-                        </div>
-                    </div>
- */

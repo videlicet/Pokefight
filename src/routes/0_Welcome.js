@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { ConfigProvider, Layout, theme, Typography} from 'antd';
+import { Button, ConfigProvider, Layout, theme, Typography} from 'antd';
 import '../App.css';
 
 const { Title } = Typography;
@@ -19,7 +19,7 @@ function AllPokes() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [title, setTitle] = useState('Pokedex')
-    const [fighters, setFighters] = useState(['a', 'b']);
+    const [fighters, setFighters] = useState([]);
 
     return (
         <ConfigProvider
@@ -31,7 +31,8 @@ function AllPokes() {
                 <Layout>
                   <Sider style={siderStyle}>
                     <h2>Your fighters:</h2>
-                    {fighters.map(e => <div>{e}</div>)}
+                    {fighters.length > 0 && fighters.map(e => <div>{e}</div>)}
+                    {fighters.length == 2 && <Button>FIGHT!</Button>}
                   </Sider>
                   <Content>
                       <Outlet context={[setTitle, fighters, setFighters]}/>

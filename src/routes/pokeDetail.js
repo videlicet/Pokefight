@@ -11,7 +11,7 @@ function PokeDetail() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [thisPokemon, setThisPokemon] = useState([])
-    const [setTitle] = useOutletContext()
+    const [setTitle, fighters, setFighters] = useOutletContext()
     let { id } = useParams();
 
     const getData = () => {

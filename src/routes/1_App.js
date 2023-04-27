@@ -6,7 +6,6 @@ import '../App.css'
 const { Title } = Typography
 const { Footer, Header, Content, Sider } = Layout
 
-
 const topLayoutStyle = { 
   border: '14px solid black',
   borderRadius: '65px',
@@ -23,23 +22,19 @@ const headerStyle = {
   backgroundColor: "rgb(206, 34, 17)"
 }
 
-const siderStyle = {
-  padding: '2rem',
-  textAlign: 'center',
-  color: 'white',
-  backgroundColor: 'rgb(10, 40, 95)',
-};
-
 const footerStyle = {
-  backgroundColor: "rgb(206, 34, 17)",
+  backgroundColor: "rgb(206, 34, 17)"
 }
 
-function Welcome() {
+function App() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [title, setTitle] = useState('Pokedex')
     const [fighters, setFighters] = useState([]);
     const [crumbs, setCrumbs] = useState([])
+    const [winner, setWinner] = useState([])
+
+
 
     return (
 
@@ -50,22 +45,14 @@ function Welcome() {
             <Breadcrumb items={crumbs}/>
           </Header>
           <Layout style={midLayoutStyle}>
-            <Sider className="fight-list" style={siderStyle} width='20%'>
-              <h2>Your fighters:</h2>
-              {fighters.length > 0 && fighters.map((e, index) => <div className='fighter' key={index}>{e.name.english}</div>)}
-              {fighters.length == 2 && <Button > <NavLink to='pokefight'>FIGHT!</NavLink></Button>}
-            </Sider>
-            <Content style={{overflow: 'hidden'}}>
-                <Outlet context={[setTitle, fighters, setFighters, setCrumbs]}/>
-            </Content>
+            <Outlet context={[setTitle, fighters, setFighters, setCrumbs, winner, setWinner]}/>
           </Layout>    
           <Footer style={footerStyle}>
-            About
+            <NavLink to='about' className='title'>About</NavLink>
           </Footer>
       </Layout>
 
     );
 }
 
-export default Welcome;
-
+export default App;

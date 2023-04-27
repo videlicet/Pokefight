@@ -5,13 +5,13 @@ import '../App.css';
 
 const { Title } = Typography;
 
-const style = { margin: '3rem 0' };
+const style = { margin: '1rem 0' };
 
-function PokeDetail() {
+function Winner() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [thisPokemon, setThisPokemon] = useState([])
-    const [setTitle, fighters, setFighters, setCrumbs] = useOutletContext()
+    const [setTitle, fighters, setFighters, setCrumbs, winner, setWinner] = useOutletContext()
     let { id } = useParams();
 
     const getData = () => {
@@ -47,26 +47,30 @@ function PokeDetail() {
 
     return (
       <Row>
-        <Col className="gutter-row" span={10} offset={7}>
-          {Object.keys(thisPokemon).length > 0 &&
-          <Card title={thisPokemon.name.english} hoverable='true' style={style}>
+        <Col className="gutter-row" span={15} offset={5}>
+          <div className="winner">
+            <h1>Congratulations!</h1>
+            <p>{winner.name.english} won!</p>
+          </div>
+          {Object.keys(winner).length > 0 &&
+          <Card title={winner.name.english} hoverable='true' style={style}>
             <div className="category">
-              <Link to={`/pokemon/${thisPokemon.id}/name`}>Names:</Link>
-              <div>{Object.keys(thisPokemon.name).map(key => <span>{key[0].toUpperCase()+key.slice(1)}: {thisPokemon.name[key]}</span>)}</div>
+              <Link to={`/pokemon/${winner.id}/name`}>Names:</Link>
+              <div>{Object.keys(winner.name).map(key => <span>{key[0].toUpperCase()+key.slice(1)}: {winner.name[key]}</span>)}</div>
             </div>
             <div className="category">
-              <Link to={`/pokemon/${thisPokemon.id}/type`}>Type:</Link>
-              <div>{thisPokemon.type.map(e => <span>{e}</span>)}</div>
+              <Link to={`/pokemon/${winner.id}/type`}>Type:</Link>
+              <div>{winner.type.map(e => <span>{e}</span>)}</div>
             </div>
             <div className="category">
-              <Link to={`/pokemon/${thisPokemon.id}/base`}>Base:</Link>
+              <Link to={`/pokemon/${winner.id}/base`}>Base:</Link>
               <div>
-                <span>HP: {thisPokemon.base.HP}</span>
-                <span>Attack: {thisPokemon.base.Attack}</span>
-                <span>Defense: {thisPokemon.base.Defense}</span>
-                <span>Sp. Attack: {thisPokemon.base['Sp. Attack']}</span>
-                <span>Sp. Defense: {thisPokemon.base['Sp. Defense']}</span>
-                <span>Speed: {thisPokemon.base.Speed}</span>
+                <span>HP: {winner.base.HP}</span>
+                <span>Attack: {winner.base.Attack}</span>
+                <span>Defense: {winner.base.Defense}</span>
+                <span>Sp. Attack: {winner.base['Sp. Attack']}</span>
+                <span>Sp. Defense: {winner.base['Sp. Defense']}</span>
+                <span>Speed: {winner.base.Speed}</span>
               </div>
             </div>
           </Card>}
@@ -75,4 +79,4 @@ function PokeDetail() {
     );
 }
 
-export default PokeDetail;
+export default Winner;

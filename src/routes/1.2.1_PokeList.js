@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, Link, useOutletContext } from 'react-router-dom';
+import { NavLink, Link, useOutletContext, Outlet } from 'react-router-dom';
 import {  Button, ConfigProvider, Layout, theme, Card, Row, Col, Typography, Input, Space, Select} from 'antd';
-import { Footer, Header, Content } from 'antd/es/layout/layout.js';
 import '../App.css';
 
-const { Title } = Typography;
+const { Content, Sider } = Layout
 const { Search } = Input;
 
-const cardStyle = { margin: '0 0 1rem 0'};
+const siderStyle = {
+    padding: '2rem',
+    textAlign: 'center',
+    color: 'white',
+    backgroundColor: 'rgb(10, 40, 95)',
+  };
 
 const searchBarStyle = { 
     width: '100%',
@@ -17,24 +21,13 @@ const searchBarStyle = {
     zIndex: '1'
   }
 
+const cardStyle = { margin: '0 0 1rem 0'};
 
-// const options = [
-//     {
-//       value: 'name',
-//       label: 'name',
-//     },
-//     {
-//       value: 'type',
-//       label: 'type',
-//     },
-//   ];
-
-
-function AllPokes() {
+function PokeList() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [allPokemon, setAllPokemon] = useState([])
-    const [setTitle, fighters, setFighters, setCrumbs] = useOutletContext()
+    const [setTitle, fighters, setFighters, setCrumbs, winner, setWinner] = useOutletContext()
 
     const getData = () => {
         setLoading(true);
@@ -56,7 +49,7 @@ function AllPokes() {
     
     useEffect(() => {
         getData()
-        setCrumbs({ title: <NavLink to='/'>Pokedex</NavLink> })
+        setCrumbs(prev => [...prev, { title: <NavLink to='/pokedex'>Pokedex</NavLink> }])
     },[])   
 
 
@@ -66,7 +59,7 @@ function AllPokes() {
 
     function onAdd(event) {
         event.preventDefault()
-        let el = allPokemon.find(i => i.name.english == event.currentTarget.parentNode.getAttribute('id')) //event.currentTarget.parentNode.getAttribute('id')
+        let el = allPokemon.find(i => i.name.english == event.currentTarget.parentNode.getAttribute('id'))
         if (fighters.length >= 2 || event.currentTarget == null) return
         return setFighters(prev => [...prev, el])
     }
@@ -80,6 +73,8 @@ function AllPokes() {
     }
 
     return (
+        <>
+        <Content style={{overflow: 'hidden'}}>
         <Layout style={{width: '100%', position: 'relative', height: "100%"}}>
             <Space direction="vertical" size="middle" style={searchBarStyle}>
                 <Search placeholder="pokemon name" onSearch={onSearch} />
@@ -88,7 +83,7 @@ function AllPokes() {
                 <Col className="gutter-row" span={10} offset={7} style={{hight: "100px", overflow:"scroll"}}>
                     {allPokemon.length > 0 && allPokemon.map((e, index) =>  
                     <div className="card" id={e.name.english}>
-                        <Link to={`/pokemon/${e.id}`} key={e.id}>
+                        <Link to={`/pokedex/${e.id}`} key={e.id}>
                             <Card title={e.name.english} hoverable='true' style={cardStyle}>
                                 <div className="category">
                                         <span>Type:</span>
@@ -114,7 +109,9 @@ function AllPokes() {
                 </Col>
             </Row>
         </Layout>
+        </Content>
+      </>
     );
 }
 
-export default AllPokes;
+export default PokeList;

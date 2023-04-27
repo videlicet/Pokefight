@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useOutletContext } from 'react-router-dom';
+import { NavLink, Link, useParams, useOutletContext } from 'react-router-dom';
 import { Button, ConfigProvider, Layout, theme, Card, Row, Col, Typography} from 'antd';
 import '../App.css';
 
 const { Title } = Typography;
 
 const style = { margin: '3rem 0' };
+const styles = { background: '#0092ff', padding: '8px 0' };
 
-function PokeDetail() {
+
+function PokeFight() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [setTitle, fighters, setFighters] = useOutletContext()
+    const [setTitle, fighters, setFighters, setCrumbs, winner, setWinner] = useOutletContext()
     let { id } = useParams();
 
     function updateTitle() {
@@ -44,13 +46,20 @@ function PokeDetail() {
 //       useEffect(() => {
 //         getData();
 //       },[])
-const styles = { background: '#0092ff', padding: '8px 0' };
+
+    function onFight(event) {
+        event.preventDefault()
+        console.log('clicked')
+        let winner = fighters[0].base.HP > fighters[1].base.HP ? fighters[0]: fighters[1];
+        console.log(winner)
+        setWinner(winner); 
+    }
 
     return (
     <>
-        <Row gutter={16} justify="space-around">
-            {fighters.length > 0 && fighters.map(e => 
-                <Col className="gutter-row" span={6} >
+        <Row justify="space-around">
+            {fighters.length > 0 && fighters.map((e, index) => 
+                <Col className="gutter-row" span={8} >
                     <Card title={e.name.english} hoverable='true' style={style}>
                         <div className="category">
                                 <span>Type:</span>
@@ -71,36 +80,13 @@ const styles = { background: '#0092ff', padding: '8px 0' };
                 </Col>
                 )}
         </Row>
-        <Row gutter={16} justify="center">
-            <Col className="gutter-row" span={1} >
-                <Button>Fight it Out!</Button>
+        <Row justify="center">
+            <Col className="gutter-row" >
+                <Button onClick={onFight}><NavLink to='/winner'>Fight it Out!</NavLink></Button>
             </Col>
         </Row>
       </>
     );
 }
 
-export default PokeDetail;
-
-/*
-
-<div className="category">
-              <Link to={`/pokemon/${thisPokemon.id}/name`}>Names:</Link>
-              <div>{Object.keys(thisPokemon.name).map(key => <span>{key[0].toUpperCase()+key.slice(1)}: {thisPokemon.name[key]}</span>)}</div>
-            </div>
-            <div className="category">
-              <Link to={`/pokemon/${thisPokemon.id}/type`}>Type:</Link>
-              <div>{thisPokemon.type.map(e => <span>{e}</span>)}</div>
-            </div>
-            <div className="category">
-              <Link to={`/pokemon/${thisPokemon.id}/base`}>Base:</Link>
-              <div>
-                <span>HP: {thisPokemon.base.HP}</span>
-                <span>Attack: {thisPokemon.base.Attack}</span>
-                <span>Defense: {thisPokemon.base.Defense}</span>
-                <span>Sp. Attack: {thisPokemon.base['Sp. Attack']}</span>
-                <span>Sp. Defense: {thisPokemon.base['Sp. Defense']}</span>
-                <span>Speed: {thisPokemon.base.Speed}</span>
-              </div>
-            </div>
-*/
+export default PokeFight;

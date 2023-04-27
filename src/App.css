@@ -25,9 +25,21 @@ span {
 .fighter {
   margin: 1rem;
   padding: 0.5rem;
-  background-color: green;
+  background-color:rgb(55, 121, 108);
   border-radius: 15px;
   font-weight: bold;
+}
+
+.winner {
+  margin: 1rem 0;
+  padding: 3rem;
+  background-color: rgb(255, 204, 0) ;
+  border-radius: 15px;
+}
+
+.winner h1 {
+  margin: 0;
+  padding: 0;
 }
 
 a {

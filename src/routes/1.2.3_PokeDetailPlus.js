@@ -12,7 +12,7 @@ function PokeDetailPlus() {
     const [error, setError] = useState(null)
     const [name, setName] = useState('');
     const [thisStat, setThisStat] = useState([])
-    const [setTitle, fighters, setFighters, setCrumbs] = useOutletContext()
+    const [setTitle, fighters, setFighters, setCrumbs, winner, setWinner] = useOutletContext()
     let { id, info } = useParams();
 
     const getData = () => {

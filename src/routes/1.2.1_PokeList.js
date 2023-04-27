@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, Link, useOutletContext, Outlet } from 'react-router-dom';
-import {  Button, ConfigProvider, Layout, theme, Card, Row, Col, Typography, Input, Space, Select} from 'antd';
+import { NavLink, Link, useOutletContext } from 'react-router-dom';
+import { Button, Layout, Card, Row, Col, Input, Space} from 'antd';
 import '../App.css';
 
-const { Content, Sider } = Layout
-const { Search } = Input;
-
-const siderStyle = {
-    padding: '2rem',
-    textAlign: 'center',
-    color: 'white',
-    backgroundColor: 'rgb(10, 40, 95)',
-  };
+const { Content } = Layout
+const { Search } = Input
 
 const searchBarStyle = { 
     width: '100%',
@@ -21,13 +14,13 @@ const searchBarStyle = {
     zIndex: '1'
   }
 
-const cardStyle = { margin: '0 0 1rem 0'};
+const cardStyle = { margin: '0 0 1rem 0'}
 
 function PokeList() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [allPokemon, setAllPokemon] = useState([])
-    const [setTitle, fighters, setFighters, setCrumbs, winner, setWinner] = useOutletContext()
+    const [setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner] = useOutletContext()
 
     const getData = () => {
         setLoading(true);
@@ -49,7 +42,7 @@ function PokeList() {
     
     useEffect(() => {
         getData()
-        setCrumbs(prev => [...prev, { title: <NavLink to='/pokedex'>Pokedex</NavLink> }])
+        setCrumbs([{title: <NavLink to='/'>Home</NavLink> }, {title: <NavLink to='/pokedex'>Pokedex</NavLink> }])
     },[])   
 
 
@@ -73,44 +66,42 @@ function PokeList() {
     }
 
     return (
-        <>
-        <Content style={{overflow: 'hidden'}}>
-        <Layout style={{width: '100%', position: 'relative', height: "100%"}}>
-            <Space direction="vertical" size="middle" style={searchBarStyle}>
-                <Search placeholder="pokemon name" onSearch={onSearch} />
-            </Space>
-            <Row style={{margin:"4rem 0 0 0", overflow:"scroll", height: "100%"}}>
-                <Col className="gutter-row" span={10} offset={7} style={{hight: "100px", overflow:"scroll"}}>
-                    {allPokemon.length > 0 && allPokemon.map((e, index) =>  
-                    <div className="card" id={e.name.english}>
-                        <Link to={`/pokedex/${e.id}`} key={e.id}>
-                            <Card title={e.name.english} hoverable='true' style={cardStyle}>
-                                <div className="category">
-                                        <span>Type:</span>
-                                        <div>{e.type.map((e, index) => <span key={index}>{e}</span>)}</div>
-                                </div>
-                                <div className="category">
-                                    <span>Base:</span>
-                                    <div>
-                                        <span>HP: {e.base.HP}</span>
-                                        <span>Attack: {e.base.Attack}</span>
-                                        <span>Defense: {e.base.Defense}</span>
-                                        <span>Sp. Attack: {e.base['Sp. Attack']}</span>
-                                        <span>Sp. Defense: {e.base['Sp. Defense']}</span>
-                                        <span>Speed: {e.base.Speed}</span>
+        <Content style={{height: "100%"}}>
+            <Layout style={{width: '100%', position: 'relative', height: "100%"}}>
+                <Space direction="vertical" size="middle" style={searchBarStyle}>
+                    <Search placeholder="pokemon name" onSearch={onSearch} />
+                </Space>
+                <Row style={{margin:"4rem 0 0 0", height: "100%", overflow: "scroll"}}>
+                    <Col className="gutter-row" span={10} offset={7}>
+                        {allPokemon.length > 0 && allPokemon.map((e, index) =>  
+                        <div className="card" id={e.name.english}>
+                            <Link to={`/pokedex/${e.id}`} key={e.id}>
+                                <Card title={e.name.english} hoverable='true' style={cardStyle}>
+                                    <div className="category">
+                                            <span>Type:</span>
+                                            <div>{e.type.map((e, index) => <span key={index}>{e}</span>)}</div>
                                     </div>
-                                </div>
-                            </Card>
-                        </Link>
-                        {fighters.length < 2 && fighters.length >= 0 && <Button onClick={onAdd} style={{margin: '0 1rem 2rem 0'}}>I choose you, {e.name.english}! {fighters.length}/2</Button>}
-                        {fighters.length > 0 &&  fighters.includes(e)  && <Button onClick={onDelete} style={{margin: '0 0 2rem 0'}} >Delete from Figthers</Button>} 
-                    </div>
-                    )}
-                </Col>
-            </Row>
-        </Layout>
+                                    <div className="category">
+                                        <span>Base:</span>
+                                        <div>
+                                            <span>HP: {e.base.HP}</span>
+                                            <span>Attack: {e.base.Attack}</span>
+                                            <span>Defense: {e.base.Defense}</span>
+                                            <span>Sp. Attack: {e.base['Sp. Attack']}</span>
+                                            <span>Sp. Defense: {e.base['Sp. Defense']}</span>
+                                            <span>Speed: {e.base.Speed}</span>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </Link>
+                            {fighters.length < 2 && fighters.length >= 0 && <Button onClick={onAdd} style={{margin: '0 1rem 2rem 0'}}>I choose you, {e.name.english}! {fighters.length}/2</Button>}
+                            {fighters.length > 0 &&  fighters.includes(e)  && <Button onClick={onDelete} style={{margin: '0 0 2rem 0'}} >Delete from Figthers</Button>} 
+                        </div>
+                        )}
+                    </Col>
+                </Row>
+            </Layout>
         </Content>
-      </>
     );
 }
 

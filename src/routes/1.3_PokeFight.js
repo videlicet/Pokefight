@@ -12,40 +12,12 @@ const styles = { background: '#0092ff', padding: '8px 0' };
 function PokeFight() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [setTitle, fighters, setFighters, setCrumbs, winner, setWinner] = useOutletContext()
-    let { id } = useParams();
+    const [setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner] = useOutletContext()
 
-    function updateTitle() {
+     useEffect(() => {
         setTitle(`${fighters[0]?.name.english} vs. ${fighters[1]?.name.english}`);
-    }
-
-    updateTitle()
-//     const getData = () => {
-//         setLoading(true);
-//         fetch(`http://localhost:4620/pokemon/${id}`)
-//         .then((res) => {
-//           console.log(`http://localhost:4620/pokemon/${id}`)
-//           console.log(res)
-//           return res.json()})
-//         .then(
-//           function(entries) {
-//               console.log(entries)
-//               setTitle(`Details about ${entries[0].name.english}`);
-//               setThisPokemon(entries[0]);
-//           }
-//         )
-//         .catch((e) => {
-//           console.log(e.message);
-//           setError(e.message);
-//         })
-//         .finally(() => {
-//           setLoading(false);
-//         });
-//       }
-    
-//       useEffect(() => {
-//         getData();
-//       },[])
+        setCrumbs([{ title: <NavLink to='/'>Home</NavLink> }, { title: <NavLink to='/pokefight'>Fight</NavLink> }])
+    }, [])
 
     function onFight(event) {
         event.preventDefault()

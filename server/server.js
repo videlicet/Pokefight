@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import pokemonRouter from './routes/pokemonRouter.js';
+import leaderboardRouter from './routes/leaderboardRouter.js'
 import errorHandler from './middlewares/errorHandler.js';
 
 const port = 4620;
@@ -9,6 +10,7 @@ app.use(cors());
 
 app.use(express.json());
 app.use('/pokemon', pokemonRouter);
+app.use('/leaderboard', leaderboardRouter);
 app.use(errorHandler);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

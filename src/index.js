@@ -9,6 +9,7 @@ import PokeDetail from './routes/1.2.2_PokeDetail.js'
 import PokeDetailPlus from './routes/1.2.3_PokeDetailPlus.js'
 import PokeFight from './routes/1.3_PokeFight.js'
 import Winner from './routes/1.4_Winner.js'
+import LeaderBoard from './routes/1.5_LeaderBoard.js'
 
 import reportWebVitals from './reportWebVitals.js'
 import './index.css'
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "/winner",
         element: <Winner />,
+      },
+      {
+        path: "/leaderboard",
+        element: <LeaderBoard />,
       }
     ]
   }

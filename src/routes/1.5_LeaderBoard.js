@@ -13,8 +13,8 @@ function Winner() {
     const [setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner] = useOutletContext()
 
     useEffect(() => {
-      setTitle(`${winner.name.english} won!`);
-      setCrumbs([{ title: <NavLink to='/'>Home</NavLink> }, { title: <NavLink to='/winner'>Winner</NavLink> }])
+      setTitle(`Leaderboard`);
+      setCrumbs([{ title: <NavLink to='/'>Home</NavLink> }, { title: <NavLink to='/leaderboard'>Leaderboard</NavLink> }])
     }, [])
 
     return (
@@ -22,6 +22,20 @@ function Winner() {
         <Layout style={{width: '100%', position: 'relative', height: "100%"}}>
           <Row style={{height: "100%", overflow: "scroll"}}>
             <Col className="gutter-row" span={15} offset={5}>
+                <h1>Leaderboard as of today</h1>
+
+            </Col>
+          </Row>
+        </Layout>
+      </Content>
+    );
+}
+
+export default Winner;
+
+
+/*
+
               <div className="winner">
                 <h1>Congratulations!</h1>
                 <p>{winner.name.english} won!</p>
@@ -48,11 +62,5 @@ function Winner() {
                   </div>
                 </div>
               </Card>}
-            </Col>
-          </Row>
-        </Layout>
-      </Content>
-    );
-}
 
-export default Winner;
+*/

@@ -11,20 +11,24 @@ function PokeDetail() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [thisPokemon, setThisPokemon] = useState([])
-    const [setTitle, fighters, setFighters, setCrumbs, winner, setWinner] = useOutletContext()
+    const [setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner] = useOutletContext()
     let { id } = useParams();
 
     const getData = () => {
         setLoading(true);
         fetch(`http://localhost:4620/pokemon/${id}`)
         .then((res) => {
-          console.log(`http://localhost:4620/pokemon/${id}`)
-          console.log(res)
           return res.json()})
         .then(
           function(entries) {
-              console.log(entries)
-              setCrumbs(prev => [...prev, { title: <NavLink to={`http://localhost:3000/pokedex/${id}`}>{entries[0].name.english}</NavLink> }])
+            console.log(crumbs)
+              if (crumbs[2]?.title.props.children!==entries[0].name.english) {
+                setCrumbs(prev =>  [prev[0], prev[1], { title: <NavLink to={`http://localhost:3000/pokedex/${id}`}>{entries[0].name.english}</NavLink>}]
+                )
+              }
+              if (crumbs?.length > 3) {
+                setCrumbs(prev => [prev[0], prev[1], prev[2]])
+              }
               setTitle(`Details about ${entries[0].name.english}`);
               setThisPokemon(entries[0]);
           }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useOutletContext } from 'react-router-dom';
+import { NavLink, Link, useParams, useOutletContext } from 'react-router-dom';
 import { ConfigProvider, Layout, theme, Card, Row, Col, Typography} from 'antd';
 import '../App.css';
 
@@ -12,7 +12,7 @@ function PokeDetailPlus() {
     const [error, setError] = useState(null)
     const [name, setName] = useState('');
     const [thisStat, setThisStat] = useState([])
-    const [setTitle, fighters, setFighters] = useOutletContext()
+    const [setTitle, fighters, setFighters, setCrumbs] = useOutletContext()
     let { id, info } = useParams();
 
     const getData = () => {
@@ -24,8 +24,8 @@ function PokeDetailPlus() {
           return res.json()})
         .then(
           function(entries) {
+            setCrumbs(prev => [...prev, { title: <NavLink to={`http://localhost:3000/pokemon/${id}/${info}`}>{info[0].toUpperCase() + info.slice(1)}s</NavLink> }])
             setTitle(`${entries[0].name.english}'s ${info}s `);
-            console.log(entries)
             setName(entries[0].name.english);
             setThisStat(entries[0][info]);
           }
@@ -45,15 +45,17 @@ function PokeDetailPlus() {
 
 
     return (
-      <Row gutter={16} >
+      <Row>
         <Col className="gutter-row" span={10} offset={8}>
           {Object.keys(thisStat).length > 0 &&
-          <Card title={name} hoverable='true' style={style}>
-            { 
-              Object.keys(thisStat).map(key => <span>{info != 'type' && key[0].toUpperCase() + key.slice(1) + ':'} {thisStat[key]}</span>)
-            }
-            </Card>
-            }
+          <Link to={`/pokemon/${id}`}>
+            <Card title={name} hoverable='true' style={style}>
+              { 
+                Object.keys(thisStat).map(key => <span>{info != 'type' && key[0].toUpperCase() + key.slice(1) + ':'} {thisStat[key]}</span>)
+              }
+              </Card>
+            </Link>
+          }
         </Col>
       </Row>
     );

@@ -6,61 +6,66 @@ import '../App.css'
 const { Title } = Typography
 const { Footer, Header, Content, Sider } = Layout
 
-const headerStyle = { height: '10rem', borderRadius:"50px"}
+
+const topLayoutStyle = { 
+  border: '14px solid black',
+  borderRadius: '65px',
+  overflow: 'hidden'
+}
+
+const midLayoutStyle = { 
+
+}
+
+const headerStyle = {
+  margin: '0',
+  height: '13rem',
+  backgroundColor: "rgb(206, 34, 17)"
+}
 
 const siderStyle = {
+  padding: '2rem',
   textAlign: 'center',
   color: 'white',
-  backgroundColor: '',
+  backgroundColor: 'rgb(10, 40, 95)',
 };
 
-const crumbs =  [
-  { title: <NavLink to='/'>Home</NavLink> },
-  { title: <NavLink to='/'>Pokemon</NavLink> },
-  { title: <NavLink to='/'>Home</NavLink> },
-  { title: <NavLink to='/'>Home</NavLink>}
-]
+const footerStyle = {
+  backgroundColor: "rgb(206, 34, 17)",
+}
 
-
-function AllPokes() {
+function Welcome() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [title, setTitle] = useState('Pokedex')
     const [fighters, setFighters] = useState([]);
-    const matches = useMatches()
-    
-
-    console.log(matches)
+    const [crumbs, setCrumbs] = useState([])
 
     return (
-        <ConfigProvider 
-            theme={{
-          algorithm: theme.darkAlgorithm,
-        }}>
-            <Layout style={{height:"100vh"}}>
-                <Header style={headerStyle}>
-                  <Title>Pokefight: {title}<br/>{matches.id}</Title>
-                  <Breadcrumb items={crumbs}/>
-                </Header>
-                <Layout>
-                  <Sider style={siderStyle} width='30rem'>
-                    <h2>Your fighters:</h2>
-                    {fighters.length > 0 && fighters.map((e, index) => <div key={index}>{e.name.english}</div>)}
-                    {fighters.length == 2 && <Button > <NavLink to='pokefight'>FIGHT!</NavLink></Button>}
-                  </Sider>
-                  <Content>
-                      <Outlet context={[setTitle, fighters, setFighters]}/>
-                  </Content>
-                </Layout>    
-                <Footer>
-                  About
-                </Footer>
-            </Layout>
-        </ConfigProvider>
+
+      <Layout style={topLayoutStyle}>
+          <Header style={headerStyle}>
+            <Title style={{margin: "0"}}><NavLink className="title" to="/">Pokefight</NavLink></Title>
+              <h2>{title}</h2>
+            <Breadcrumb items={crumbs}/>
+          </Header>
+          <Layout style={midLayoutStyle}>
+            <Sider className="fight-list" style={siderStyle} width='20%'>
+              <h2>Your fighters:</h2>
+              {fighters.length > 0 && fighters.map((e, index) => <div className='fighter' key={index}>{e.name.english}</div>)}
+              {fighters.length == 2 && <Button > <NavLink to='pokefight'>FIGHT!</NavLink></Button>}
+            </Sider>
+            <Content style={{overflow: 'hidden'}}>
+                <Outlet context={[setTitle, fighters, setFighters, setCrumbs]}/>
+            </Content>
+          </Layout>    
+          <Footer style={footerStyle}>
+            About
+          </Footer>
+      </Layout>
+
     );
 }
 
-export default AllPokes;
+export default Welcome;
 
-
-//href='http://localhost:3000/pokefight'

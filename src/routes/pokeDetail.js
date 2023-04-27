@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useOutletContext } from 'react-router-dom';
+import { NavLink, Link, useParams, useOutletContext } from 'react-router-dom';
 import { ConfigProvider, Layout, theme, Card, Row, Col, Typography} from 'antd';
 import '../App.css';
 
@@ -11,7 +11,7 @@ function PokeDetail() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [thisPokemon, setThisPokemon] = useState([])
-    const [setTitle, fighters, setFighters] = useOutletContext()
+    const [setTitle, fighters, setFighters, setCrumbs] = useOutletContext()
     let { id } = useParams();
 
     const getData = () => {
@@ -24,6 +24,10 @@ function PokeDetail() {
         .then(
           function(entries) {
               console.log(entries)
+              setCrumbs([
+                { title: <NavLink to='/'>Pokedex</NavLink> }, 
+                { title: <NavLink to={`http://localhost:3000/pokemon/${id}`}>{entries[0].name.english}</NavLink> 
+              }])
               setTitle(`Details about ${entries[0].name.english}`);
               setThisPokemon(entries[0]);
           }
@@ -38,13 +42,12 @@ function PokeDetail() {
       }
     
       useEffect(() => {
-        getData();
+        getData()
       },[])
 
-
     return (
-      <Row gutter={16} >
-        <Col className="gutter-row" span={10} offset={8}>
+      <Row>
+        <Col className="gutter-row" span={10} offset={7}>
           {Object.keys(thisPokemon).length > 0 &&
           <Card title={thisPokemon.name.english} hoverable='true' style={style}>
             <div className="category">

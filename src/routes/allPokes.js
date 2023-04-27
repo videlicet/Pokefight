@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useOutletContext } from 'react-router-dom';
+import { NavLink, Link, useOutletContext } from 'react-router-dom';
 import {  Button, ConfigProvider, Layout, theme, Card, Row, Col, Typography, Input, Space, Select} from 'antd';
 import { Footer, Header, Content } from 'antd/es/layout/layout.js';
 import '../App.css';
@@ -7,7 +7,15 @@ import '../App.css';
 const { Title } = Typography;
 const { Search } = Input;
 
-const style = { margin: '3rem 0 1rem 0' };
+const cardStyle = { margin: '0 0 1rem 0'};
+
+const searchBarStyle = { 
+    width: '100%',
+    backgroundColor: 'rgb(245, 245, 245)',
+    position: 'absolute',
+    padding: '1rem 3rem 1rem 3rem',
+    zIndex: '1'
+  }
 
 
 // const options = [
@@ -26,7 +34,7 @@ function AllPokes() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [allPokemon, setAllPokemon] = useState([])
-    const [setTitle, fighters, setFighters] = useOutletContext()
+    const [setTitle, fighters, setFighters, setCrumbs] = useOutletContext()
 
     const getData = () => {
         setLoading(true);
@@ -46,9 +54,11 @@ function AllPokes() {
         });
       }
     
-      useEffect(() => {
-        getData();
-      },[])
+    useEffect(() => {
+        getData()
+        setCrumbs({ title: <NavLink to='/'>Pokedex</NavLink> })
+    },[])   
+
 
     function onSearch(e) {
         setAllPokemon([allPokemon.find(i => i.name.english == e)]);
@@ -70,16 +80,16 @@ function AllPokes() {
     }
 
     return (
-        <>
-            <Space direction="vertical" size="middle" style={{ width: '100%', padding: '1rem 3rem 0 3rem' }}>
+        <Layout style={{width: '100%', position: 'relative', height: "100%"}}>
+            <Space direction="vertical" size="middle" style={searchBarStyle}>
                 <Search placeholder="pokemon name" onSearch={onSearch} />
             </Space>
-            <Row gutter={16}>
-                <Col className="gutter-row" span={10} offset={8}>
+            <Row style={{margin:"4rem 0 0 0", overflow:"scroll", height: "100%"}}>
+                <Col className="gutter-row" span={10} offset={7} style={{hight: "100px", overflow:"scroll"}}>
                     {allPokemon.length > 0 && allPokemon.map((e, index) =>  
-                    <div id={e.name.english}>
+                    <div className="card" id={e.name.english}>
                         <Link to={`/pokemon/${e.id}`} key={e.id}>
-                            <Card title={e.name.english} hoverable='true' style={style}>
+                            <Card title={e.name.english} hoverable='true' style={cardStyle}>
                                 <div className="category">
                                         <span>Type:</span>
                                         <div>{e.type.map((e, index) => <span key={index}>{e}</span>)}</div>
@@ -97,13 +107,13 @@ function AllPokes() {
                                 </div>
                             </Card>
                         </Link>
-                        {fighters.length < 2 && fighters.length >= 0 && <Button onClick={onAdd}>I choose you, {e.name.english}! {fighters.length}/2</Button>}
-                        {fighters.length > 0 &&  fighters.includes(e)  && <Button onClick={onDelete} style={{margin: '0 0 0 1rem'}}>Delete from Figthers</Button>} 
+                        {fighters.length < 2 && fighters.length >= 0 && <Button onClick={onAdd} style={{margin: '0 1rem 2rem 0'}}>I choose you, {e.name.english}! {fighters.length}/2</Button>}
+                        {fighters.length > 0 &&  fighters.includes(e)  && <Button onClick={onDelete} style={{margin: '0 0 2rem 0'}} >Delete from Figthers</Button>} 
                     </div>
                     )}
                 </Col>
             </Row>
-        </>
+        </Layout>
     );
 }
 

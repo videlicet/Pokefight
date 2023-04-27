@@ -1,19 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useOutletContext } from 'react-router-dom';
-import {  Layout, Card, Row, Col} from 'antd';
+import {  Layout, Card, Row, Col, Space, Table} from 'antd';
 import '../App.css';
 
 const { Content } = Layout
 
 const cardStyle = { margin: '1rem 0' }
 
+const columns = [
+  {
+    title: 'Winner',
+    dataIndex: 'winner',
+    key: 'winner',
+    render: (text) => <a>{text}</a>
+  },
+  {
+    title: 'Loser',
+    dataIndex: 'loser',
+    key: 'loser',
+    render: (text) => <a>{text}</a>
+  },
+  {
+    title: 'Date',
+    dataIndex: 'date',
+    key: 'date',
+  },
+];
+
 function Winner() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner] = useOutletContext()
+    const [leaderBoard, setLeaderBoard] = useState([]);
+
+    const dataSource = [
+      {
+
+        winner: 'Mike',
+        loser: 32,
+        date: '10 Downing Street',
+      },
+      {
+
+        winner: 'John',
+        loser: 42,
+        date: '10 Downing Street',
+      },
+    ];
+
+    const getData = () => {
+      setLoading(true)
+      fetch('http://localhost:4620/leaderboard')
+      .then((res) => res.json())
+      .then(
+          function(entries) {
+              setLeaderBoard(entries);
+          }
+      )
+      .catch((e) => {
+        setError(e.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+    }
 
     useEffect(() => {
-      setTitle(`Leaderboard`);
+      getData()
+      setTitle(`Leaderboard`)
       setCrumbs([{ title: <NavLink to='/'>Home</NavLink> }, { title: <NavLink to='/leaderboard'>Leaderboard</NavLink> }])
     }, [])
 
@@ -22,8 +76,7 @@ function Winner() {
         <Layout style={{width: '100%', position: 'relative', height: "100%"}}>
           <Row style={{height: "100%", overflow: "scroll"}}>
             <Col className="gutter-row" span={15} offset={5}>
-                <h1>Leaderboard as of today</h1>
-
+                <Table className="leaderboard" dataSource={leaderBoard} columns={columns} />;
             </Col>
           </Row>
         </Layout>

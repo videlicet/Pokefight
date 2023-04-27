@@ -9,5 +9,4 @@ leaderboardRouter.route('/')
 leaderboardRouter.route('/save')
     .get(postFight)
 
-
 export default leaderboardRouter;

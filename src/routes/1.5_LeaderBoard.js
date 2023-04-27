@@ -33,21 +33,6 @@ function Winner() {
     const [setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner] = useOutletContext()
     const [leaderBoard, setLeaderBoard] = useState([]);
 
-    const dataSource = [
-      {
-
-        winner: 'Mike',
-        loser: 32,
-        date: '10 Downing Street',
-      },
-      {
-
-        winner: 'John',
-        loser: 42,
-        date: '10 Downing Street',
-      },
-    ];
-
     const getData = () => {
       setLoading(true)
       fetch('http://localhost:4620/leaderboard')

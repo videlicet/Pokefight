@@ -7,6 +7,6 @@ leaderboardRouter.route('/')
     .get(getAllFights)
 
 leaderboardRouter.route('/save')
-    .get(postFight)
+    .post(postFight)
 
 export default leaderboardRouter;

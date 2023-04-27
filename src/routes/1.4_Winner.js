@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useOutletContext } from 'react-router-dom';
-import {  Layout, Card, Row, Col} from 'antd';
+import { Button, Layout, Card, Row, Col} from 'antd';
 import '../App.css';
 
 const { Content } = Layout
@@ -16,6 +16,43 @@ function Winner() {
       setTitle(`${winner.name.english} won!`);
       setCrumbs([{ title: <NavLink to='/'>Home</NavLink> }, { title: <NavLink to='/winner'>Winner</NavLink> }])
     }, [])
+
+    const data = 
+      {
+        winner: "a",
+        loser: "b",
+        date: "c"
+    } 
+    
+    var raw = JSON.stringify({
+        winner: "Venusaur",
+        loser: "Charmander",
+        date: "today"
+      });
+
+    let fetchData = {
+      method: 'POST',
+      body: raw,
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      credentials: "same-origin"
+    }
+
+    function onSubmit(event) {
+      event.preventDefault()
+      console.log('submit triggered')
+      fetch('http://localhost:4620/leaderboard/save', fetchData)
+      .then((res) => res.json())
+      .then(
+        function(entries) {
+          console.log(entries.winner)
+        }
+      )
+      .catch((e) => {
+        setError(e.message);
+      })
+    }
 
     return (
       <Content style={{height: "100%"}}>
@@ -48,6 +85,7 @@ function Winner() {
                   </div>
                 </div>
               </Card>}
+              <Button onClick={onSubmit} style={{marginBottom: '2rem'}}>Submit to Leaderboard</Button>
             </Col>
           </Row>
         </Layout>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { NavLink, Link, useOutletContext } from 'react-router-dom';
 import { Button, Layout, Card, Row, Col, Space, Table} from 'antd';
 import format from 'date-format'
@@ -12,14 +12,14 @@ const columns = [
   {
     title: 'Winner',
     dataIndex: 'winner',
-    key: 'winner',
-    render: (text) => <a>{text}</a>
+    key: 'winner'
+    //render: (text) => <a>{text}</a>
   },
   {
     title: 'Loser',
     dataIndex: 'loser',
-    key: 'loser',
-    render: (text) => <a>{text}</a>
+    key: 'loser'
+    //render: (text) => <a>{text}</a>
   },
   {
     title: 'Date',
@@ -33,6 +33,7 @@ function Winner() {
     const [error, setError] = useState(null)
     const [setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner] = useOutletContext()
     const [leaderBoard, setLeaderBoard] = useState([]);
+    const [loadingButton, setLoadingButton] = useState([]);
 
     const getData = () => {
       setLoading(true)
@@ -76,6 +77,19 @@ function Winner() {
       .finally(() => {
         setLoading(false);
       });
+      setLoadingButton((prevLoadings) => {
+        const newLoadings = [...prevLoadings];
+        newLoadings[0] = true;
+        return newLoadings;
+      });
+      setTimeout(() => {
+        setLoadingButton((prevLoadings) => {
+          const newLoadings = [...prevLoadings];
+          newLoadings[0] = false;
+          getData();
+          return newLoadings;
+        });
+      }, 2000);
     }
 
     return (
@@ -84,7 +98,7 @@ function Winner() {
           <Row style={{height: "100%", overflow: "scroll"}}>
             <Col className="gutter-row" span={15} offset={5}>
                 <Table className="leaderboard" dataSource={leaderBoard} columns={columns} />
-                <Button onClick={onDeleteAll}>Clear Leaderboard</Button>
+                {leaderBoard.length != 0 && <Button style={{marginTop: "1rem"}} loading={loadingButton[0]} onClick={onDeleteAll}>Clear Leaderboard</Button>}
             </Col>
           </Row>
         </Layout>
@@ -93,35 +107,3 @@ function Winner() {
 }
 
 export default Winner;
-
-
-/*
-
-              <div className="winner">
-                <h1>Congratulations!</h1>
-                <p>{winner.name.english} won!</p>
-              </div>
-              {Object.keys(winner).length > 0 &&
-              <Card title={winner.name.english} hoverable='true' style={cardStyle}>
-                <div className="category">
-                  <Link to={`/pokemon/${winner.id}/name`}>Names:</Link>
-                  <div>{Object.keys(winner.name).map(key => <span>{key[0].toUpperCase()+key.slice(1)}: {winner.name[key]}</span>)}</div>
-                </div>
-                <div className="category">
-                  <Link to={`/pokemon/${winner.id}/type`}>Type:</Link>
-                  <div>{winner.type.map(e => <span>{e}</span>)}</div>
-                </div>
-                <div className="category">
-                  <Link to={`/pokemon/${winner.id}/base`}>Base:</Link>
-                  <div>
-                    <span>HP: {winner.base.HP}</span>
-                    <span>Attack: {winner.base.Attack}</span>
-                    <span>Defense: {winner.base.Defense}</span>
-                    <span>Sp. Attack: {winner.base['Sp. Attack']}</span>
-                    <span>Sp. Defense: {winner.base['Sp. Defense']}</span>
-                    <span>Speed: {winner.base.Speed}</span>
-                  </div>
-                </div>
-              </Card>}
-
-*/

@@ -11,17 +11,20 @@ function Winner() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
+    const [loadingButton, setLoadingButton] = useState([]);
+    const [submitted, setSubmitted] = useState(false);
+
+    setTitle(`${result[0]?.name?.english} won!`)
 
     useEffect(() => {
-      setTitle(`${result[0].name.english} won!`);
       setCrumbs([{ title: <NavLink to='/'>Home</NavLink> }, { title: <NavLink to='/winner'>Winner</NavLink> }])
     }, [])
 
     let raw = JSON.stringify({
-        winner: result[0].name.english,
-        loser: result[1].name.english,
-        date: new Date()
-      });
+      winner: result[0]?.name?.english,
+      loser: result[1]?.name?.english,
+      date: new Date()
+    });
 
     let fetchData = {
       method: 'POST',
@@ -46,6 +49,20 @@ function Winner() {
       .catch((e) => {
         setError(e.message);
       })
+
+      setLoadingButton((prevLoadings) => {
+        const newLoadings = [...prevLoadings];
+        newLoadings[0] = true;
+        return newLoadings;
+      });
+      setTimeout(() => {
+        setLoadingButton((prevLoadings) => {
+          const newLoadings = [...prevLoadings];
+          newLoadings[0] = false;
+          setSubmitted(true);
+          return newLoadings;
+        });
+      }, 2000);
     }
 
     return (
@@ -55,32 +72,32 @@ function Winner() {
             <Col className="gutter-row" span={15} offset={5}>
               <div className="winner">
                 <h1>Congratulations!</h1>
-                <p>{result[0].name.english} won!</p>
+                <p>{result[0]?.name?.english} won!</p>
               </div>
               {Object.keys(result[0]).length > 0 &&
-              <Card title={result[0].name.english} hoverable='true' style={cardStyle}>
+              <Card title={result[0]?.name?.english} hoverable='true' style={cardStyle}>
                 <div className="category">
                   <span className="category-title">Names:</span>
-                  <div>{Object.keys(result[0].name).map(key => <span>{key[0].toUpperCase()+key.slice(1)}: {result[0].name[key]}</span>)}</div>
+                  <div>{Object.keys(result[0]?.name).map(key => <span>{key[0].toUpperCase()+key.slice(1)}: {result[0]?.name[key]}</span>)}</div>
                 </div>
                 <div className="category">
                   <span className="category-title">Type:</span>
-                  <div>{result[0].type.map(e => <span>{e}</span>)}</div>
+                  <div>{result[0]?.type?.map(e => <span>{e}</span>)}</div>
                 </div>
                 <div className="category">
                   <span className="category-title">Base:</span>
                   <div className="info">
-                    <span>HP: {result[0].base.HP}</span>
-                    <span>Attack: {result[0].base.Attack}</span>
-                    <span>Defense: {result[0].base.Defense}</span>
-                    <span>Sp. Attack: {result[0].base['Sp. Attack']}</span>
-                    <span>Sp. Defense: {result[0].base['Sp. Defense']}</span>
-                    <span>Speed: {result[0].base.Speed}</span>
+                    <span>HP: {result[0]?.base?.HP}</span>
+                    <span>Attack: {result[0]?.base?.Attack}</span>
+                    <span>Defense: {result[0]?.base?.Defense}</span>
+                    <span>Sp. Attack: {result[0]?.base['Sp. Attack']}</span>
+                    <span>Sp. Defense: {result[0]?.base['Sp. Defense']}</span>
+                    <span>Speed: {result[0]?.base?.Speed}</span>
                   </div>
                 </div>
               </Card>}
               <div style={{display: "flex", justifyContent: "space-between"}}>
-                <Button onClick={onSubmit} style={{marginBottom: '2rem'}}>Submit to Leaderboard</Button>
+                {!submitted && <Button loading={loadingButton[0]} onClick={onSubmit} style={{marginBottom: '2rem'}}>Submit to Leaderboard</Button>}
                 <NavLink to='/leaderboard'><Button>See Leaderboard</Button></NavLink>
               </div>
             </Col>

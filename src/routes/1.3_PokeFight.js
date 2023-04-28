@@ -1,64 +1,103 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, Link, useParams, useOutletContext } from 'react-router-dom';
-import { Button, ConfigProvider, Layout, theme, Card, Row, Col, Typography} from 'antd';
+import { NavLink, useOutletContext, useNavigate} from 'react-router-dom';
+import { Layout, Button, Card, Row, Col} from 'antd';
 import '../App.css';
 
-const { Title } = Typography;
-
 const style = { margin: '3rem 0' };
-const styles = { background: '#0092ff', padding: '8px 0' };
 
+const { Content } = Layout
 
 function PokeFight() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const navigate = useNavigate();
+    const [loadingButton, setLoadingButton] = useState([])
     const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
+    const [images, setImages] = useState([]);
+
+    const getData = () => {
+        setLoading(true);
+        
+        const promises = [];
+
+        const urlFirstFighter = `https://pokeapi.co/api/v2/pokemon/${fighters[0]?.id}`
+        const urlSecondFighter = `https://pokeapi.co/api/v2/pokemon/${fighters[1]?.id}`
+        promises.push(fetch(urlFirstFighter).then((res) => res.json()))
+        promises.push(fetch(urlSecondFighter).then((res) => res.json()));
+
+        Promise.all(promises).then((res) => {
+            console.log(res[1].sprites.other['official-artwork'].front_default)
+                setImages([res[0].sprites.other['official-artwork'].front_default, res[1].sprites.other['official-artwork'].front_default]);
+            })
+            .catch((e) => {
+                console.log(e.message);
+                setError(e.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+      }
 
      useEffect(() => {
-        setTitle(`${fighters[0]?.name.english} vs. ${fighters[1]?.name.english}`);
+        getData()
+        setTitle(`${fighters[0]?.name.english} vs. ${fighters[1]?.name.english}`)
         setCrumbs([{ title: <NavLink to='/'>Home</NavLink> }, { title: <NavLink to='/pokefight'>Fight</NavLink> }])
     }, [])
 
     function onFight(event) {
         event.preventDefault()
-        console.log('clicked')
-        let winner = fighters[0].base.HP > fighters[1].base.HP ? fighters[0]: fighters[1];
-        let loser = fighters.find(e => e != winner);
+        console.log(images)
+        let winner = fighters[0].base.HP > fighters[1].base.HP ? fighters[0]: fighters[1]
+        let loser = fighters.find(e => e != winner) || fighters[0];
         console.log(winner, loser)
-        setResult([winner, loser]); 
+        setLoadingButton((prevLoadings) => {
+            const newLoadings = [...prevLoadings];
+            newLoadings[0] = true;
+            return newLoadings;
+        });
+        setTimeout(() => {
+            setLoadingButton((prevLoadings) => {
+            const newLoadings = [...prevLoadings];
+            newLoadings[0] = false;
+            setResult([winner, loser])
+            setFighters([])
+            navigate("/winner")
+            return newLoadings;
+            });
+        }, 2000);
     }
 
     return (
-    <>
-        <Row justify="space-around">
-            {fighters.length > 0 && fighters.map((e, index) => 
-                <Col className="gutter-row" span={8} >
-                    <Card title={e.name.english} hoverable='true' style={style}>
-                        <div className="category">
-                                <span>Type:</span>
-                                <div>{e.type.map((i, index) => <span key={index}>{i}</span>)}</div>
-                        </div>
-                        <div className="category">
-                            <span>Base:</span>
-                            <div>
-                                <span>HP: {e.base.HP}</span>
-                                <span>Attack: {e.base.Attack}</span>
-                                <span>Defense: {e.base.Defense}</span>
-                                <span>Sp. Attack: {e.base['Sp. Attack']}</span>
-                                <span>Sp. Defense: {e.base['Sp. Defense']}</span>
-                                <span>Speed: {e.base.Speed}</span>
+    <Content style={{height: "100%"}}>
+        <Layout style={{width: '100%', position: 'relative', height: "100%"}}>
+            <Row  style={{height: "100%", overflow: "scroll"}} justify="space-around">
+                {fighters.length > 0 && images && fighters.map((e, j) => 
+                    <Col className="gutter-row" span={8} >
+                        <Card 
+                            cover={<img alt={e.name.english} src={images[j]}/>}
+                            title={e.name.english} hoverable='true' style={style}>
+                            <div className="category">
+                                    <span className="category-title">Type:</span>
+                                    <div>{e.type.map((i, index) => <span key={index}>{i}</span>)}</div>
                             </div>
-                        </div>
-                    </Card>
-                </Col>
-                )}
-        </Row>
-        <Row justify="center">
-            <Col className="gutter-row" >
-                <Button onClick={onFight}><NavLink to='/winner'>Fight it Out!</NavLink></Button>
-            </Col>
-        </Row>
-      </>
+                            <div className="category">
+                                <span className="category-title">Base:</span>
+                                <div>
+                                    <span>HP: {e.base.HP}</span>
+                                    <span>Attack: {e.base.Attack}</span>
+                                    <span>Defense: {e.base.Defense}</span>
+                                    <span>Sp. Attack: {e.base['Sp. Attack']}</span>
+                                    <span>Sp. Defense: {e.base['Sp. Defense']}</span>
+                                    <span>Speed: {e.base.Speed}</span>
+                                </div>
+                            </div>
+                        </Card>
+                    </Col>
+                    )}
+            </Row>
+            <Button type="primary" style={{position: "relative", width: "15%", left: "42.5%", top: "-50%"}} loading={loadingButton[0]} onClick={onFight} danger>FIGHT!</Button>
+        </Layout>
+      </Content>
     );
 }
 

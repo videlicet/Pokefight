@@ -29,7 +29,7 @@ function Welcome() {
               <li>Node.js, Express.js, mongoose</li>
               <li>MongoDB</li>
             </ul>
-            <p>Check out the <a href="" target="_blank">GitHub-Repo</a></p>
+            <p>Check out the <a href="https://github.com/videlicet/Pokefight.git" target="_blank">GitHub-Repo</a>.</p>
           </div>
         </Col>
       </Row>

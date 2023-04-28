@@ -32,7 +32,7 @@ function App() {
     const [title, setTitle] = useState('Welcome')
     const [fighters, setFighters] = useState([])
     const [crumbs, setCrumbs] = useState([])
-    const [result, setResult] = useState([])
+    const [result, setResult] = useState([{},{}])
 
     return (
       <Layout style={topLayoutStyle}>

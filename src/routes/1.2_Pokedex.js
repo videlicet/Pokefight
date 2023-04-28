@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useOutletContext, Outlet } from 'react-router-dom';
-import {  Button, Layout } from 'antd';
+import { Button, Layout } from 'antd';
+import { CloseOutlined } from '@ant-design/icons'
 import '../App.css';
 
 const { Content, Sider } = Layout
@@ -29,15 +30,15 @@ function Pokedex() {
 
     return (
         <Layout style={{height: '100%'}}>
-        <Sider className="fight-list" style={siderStyle} width='20%'>
+        <Sider className="fight-list" style={siderStyle} width='20%' >
             <h2>Your fighters:</h2>
               {fighters.length > 0 && fighters.map((e, index) => 
                 <div className="fighters" id={e.name.english}>
                   <div className='fighter' key={index}>{e.name.english}</div>
-                  <Button onClick={onDelete}>X</Button>
+                  <Button style={{top: "2px", fontWeight: "bold"}} onClick={onDelete} shape="circle" danger ghost><CloseOutlined /></Button>
                 </div>
               )}
-            {fighters.length == 2 && <Button><NavLink to='/pokefight'>FIGHT!</NavLink></Button>}
+            {fighters.length == 2 && <Button style={{marginTop: "3rem"}} type="primary" danger><NavLink to='/pokefight'>Go to Arena</NavLink></Button>}
         </Sider>
         <Content style={{height: '100%'}}>
             <Outlet context={[setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult]}/>

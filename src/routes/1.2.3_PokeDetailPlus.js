@@ -51,7 +51,7 @@ function PokeDetailPlus() {
           <Link to={`/pokedex/${id}`}>
             <Card title={name} hoverable='true' style={cardStyle}>
               { 
-                Object.keys(thisStat).map(key => <span>{info != 'type' && key[0].toUpperCase() + key.slice(1) + ':'} {thisStat[key]}</span>)
+                Object.keys(thisStat).map(key => <span style={{fontWeight: "normal"}}>{info != 'type' && key[0].toUpperCase() + key.slice(1) + ':'} {thisStat[key]}</span>)
               }
               </Card>
             </Link>

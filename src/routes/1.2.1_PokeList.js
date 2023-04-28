@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useOutletContext } from 'react-router-dom';
 import { Button, Layout, Card, Row, Col, Input, Space} from 'antd';
+import { PlusOutlined, CloseOutlined } from '@ant-design/icons'
 import '../App.css';
 
 const { Content } = Layout
@@ -21,6 +22,7 @@ function PokeList() {
     const [error, setError] = useState(null)
     const [allPokemon, setAllPokemon] = useState([])
     const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
+    const [images, setImages] = useState([]);
 
     const getData = () => {
         setLoading(true);
@@ -28,9 +30,24 @@ function PokeList() {
         .then((res) => res.json())
         .then(
             function(entries) {
-                entries.splice(5) // spliced for performance issues
+                entries.splice(10) // spliced for performance issues
+                entries.forEach(e => {
+                    const url = `https://pokeapi.co/api/v2/pokemon/${e.id}`;
+                    fetch(url)
+                        .then((res) => res.json())
+                        .then((res) => {
+                            let el = {
+                                id: e.id,
+                                url: res.sprites.other['official-artwork'].front_default
+                            }
+                            setImages(prev => ([...prev, el]))
+                        })
+                        .catch((e) => {
+                            setError(e.message)
+                        });                  
+                })
                 console.log('GET to SERVER')
-                setAllPokemon(entries);
+                setAllPokemon(entries)
             }
         )
         .catch((e) => {
@@ -42,24 +59,29 @@ function PokeList() {
       }
     
     useEffect(() => {
+        console.log(allPokemon)
         getData()
         setCrumbs([{title: <NavLink to='/'>Home</NavLink> }, {title: <NavLink to='/pokedex'>Pokedex</NavLink> }])
     },[])   
 
     function onSearch(e) {
-        setAllPokemon([allPokemon.find(i => i.name.english == e)]);
+        if (e) {
+            setAllPokemon([allPokemon.find(i => i.name.english.toLowerCase == e.toLowerCase)]);
+        } else return getData()
     }
 
     function onAdd(event) {
         event.preventDefault()
-        let el = allPokemon.find(i => i.name.english == event.currentTarget.parentNode.getAttribute('id'))
+        console.log(event.currentTarget.getAttribute('id'))
+        let el = allPokemon.find(i => i.name.english == event.currentTarget.getAttribute('id'))
         if (fighters.length >= 2 || event.currentTarget == null) return
         return setFighters(prev => [...prev, el])
     }
 
     function onDelete(event) {
         event.preventDefault();
-        let el = allPokemon.find(i => i.name.english == event.currentTarget.parentNode.getAttribute('id'))
+        let el = allPokemon.find(i => i.name.english == event.currentTarget.getAttribute('id'))
+        console.log(el);
         if (fighters.length <= 0) return
         if (fighters[0] == fighters[1]) return setFighters([fighters[0]])    
         return setFighters(prev => prev.filter(e => e != el))
@@ -73,14 +95,43 @@ function PokeList() {
                 </Space>
                 <Row style={{margin:"4rem 0 0 0", height: "100%", overflow: "scroll"}}>
                     <Col className="gutter-row" span={10} offset={7}>
-                        {allPokemon.length > 0 && allPokemon.map((e, index) =>  
+                        {allPokemon.length > 0 && allPokemon.map((e, i) =>  
                         <div className="card" id={e.name.english}>
-                            <Link to={`/pokedex/${e.id}`} key={e.id}>
-                                <Card title={e.name.english} hoverable='true' style={cardStyle}>
-                                    <div className="category">
-                                            <span className='category-title'>Type:</span>
-                                            <div>{e.type.map((e, index) => <span key={index}>{e}</span>)}</div>
+                            <Link to={`/pokedex/${e.id}`} >
+                                <Card 
+                                    cover={<img alt={e.name.english} src={images?.find(img => img.id == e.id)?.url}/>}
+                                    title={ 
+                                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                                        <span>{e.name.english}</span>
+                                        <div>
+                                            {fighters.length < 2 && fighters.length >= 0 && <Button id={e.name.english} onClick={onAdd} type="primary" shape="circle" size="small"><PlusOutlined /></Button>}
+                                            {fighters.length > 0 &&  fighters.includes(e)  && <Button id={e.name.english}  style={{fontWeight: "bold", marginLeft: "1rem"}} onClick={onDelete} shape="circle" size="small" danger><CloseOutlined /></Button>} 
+                                        </div>
                                     </div>
+                                }>
+                                </Card>
+                            </Link>
+                        </div>
+                        )}
+                    </Col>
+                </Row>
+            </Layout>
+        </Content>
+    );
+}
+
+export default PokeList;
+
+
+/**
+      {fighters.length < 2 && fighters.length >= 0 && <Button onClick={onAdd} style={{margin: '0 1rem 2rem 0'}}>I choose you, {e.name.english}!</Button>}
+                            {fighters.length > 0 &&  fighters.includes(e)  && <Button  style={{top: "2px", fontWeight: "bold", margin: '0 0 2rem 0'}} onClick={onDelete} shape="circle" danger ghost>X</Button>}
+
+
+                                                                <div className="category">
+                                        <span className='category-title'>Type:</span>
+                                        <div>{e.type.map((e, index) => <span key={index}>{e}</span>)}</div>
+                                    </div> 
                                     <div className="category">
                                         <span className='category-title'>Base:</span>
                                         <div>
@@ -92,17 +143,4 @@ function PokeList() {
                                             <span>Speed: {e.base.Speed}</span>
                                         </div>
                                     </div>
-                                </Card>
-                            </Link>
-                            {fighters.length < 2 && fighters.length >= 0 && <Button onClick={onAdd} style={{margin: '0 1rem 2rem 0'}}>I choose you, {e.name.english}! {fighters.length}/2</Button>}
-                            {fighters.length > 0 &&  fighters.includes(e)  && <Button onClick={onDelete} style={{margin: '0 0 2rem 0'}} >Delete from Figthers</Button>} 
-                        </div>
-                        )}
-                    </Col>
-                </Row>
-            </Layout>
-        </Content>
-    );
-}
-
-export default PokeList;
+ */

@@ -12,7 +12,7 @@ const styles = { background: '#0092ff', padding: '8px 0' };
 function PokeFight() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner] = useOutletContext()
+    const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
 
      useEffect(() => {
         setTitle(`${fighters[0]?.name.english} vs. ${fighters[1]?.name.english}`);
@@ -23,8 +23,9 @@ function PokeFight() {
         event.preventDefault()
         console.log('clicked')
         let winner = fighters[0].base.HP > fighters[1].base.HP ? fighters[0]: fighters[1];
-        console.log(winner)
-        setWinner(winner); 
+        let loser = fighters.find(e => e != winner);
+        console.log(winner, loser)
+        setResult([winner, loser]); 
     }
 
     return (

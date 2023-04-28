@@ -10,24 +10,17 @@ const cardStyle = { margin: '1rem 0' }
 function Winner() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner] = useOutletContext()
+    const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
 
     useEffect(() => {
-      setTitle(`${winner.name.english} won!`);
+      setTitle(`${result[0].name.english} won!`);
       setCrumbs([{ title: <NavLink to='/'>Home</NavLink> }, { title: <NavLink to='/winner'>Winner</NavLink> }])
     }, [])
 
-    const data = 
-      {
-        winner: "a",
-        loser: "b",
-        date: "c"
-    } 
-    
-    var raw = JSON.stringify({
-        winner: "Venusaur",
-        loser: "Charmander",
-        date: "today"
+    let raw = JSON.stringify({
+        winner: result[0].name.english,
+        loser: result[1].name.english,
+        date: new Date()
       });
 
     let fetchData = {
@@ -46,7 +39,8 @@ function Winner() {
       .then((res) => res.json())
       .then(
         function(entries) {
-          console.log(entries.winner)
+          console.log('POST to SERVER')
+          console.log(entries)
         }
       )
       .catch((e) => {
@@ -61,27 +55,27 @@ function Winner() {
             <Col className="gutter-row" span={15} offset={5}>
               <div className="winner">
                 <h1>Congratulations!</h1>
-                <p>{winner.name.english} won!</p>
+                <p>{result[0].name.english} won!</p>
               </div>
-              {Object.keys(winner).length > 0 &&
-              <Card title={winner.name.english} hoverable='true' style={cardStyle}>
+              {Object.keys(result[0]).length > 0 &&
+              <Card title={result[0].name.english} hoverable='true' style={cardStyle}>
                 <div className="category">
-                  <Link to={`/pokemon/${winner.id}/name`}>Names:</Link>
-                  <div>{Object.keys(winner.name).map(key => <span>{key[0].toUpperCase()+key.slice(1)}: {winner.name[key]}</span>)}</div>
+                  <Link to={`/pokemon/${result[0].id}/name`}>Names:</Link>
+                  <div>{Object.keys(result[0].name).map(key => <span>{key[0].toUpperCase()+key.slice(1)}: {result[0].name[key]}</span>)}</div>
                 </div>
                 <div className="category">
-                  <Link to={`/pokemon/${winner.id}/type`}>Type:</Link>
-                  <div>{winner.type.map(e => <span>{e}</span>)}</div>
+                  <Link to={`/pokemon/${result[0].id}/type`}>Type:</Link>
+                  <div>{result[0].type.map(e => <span>{e}</span>)}</div>
                 </div>
                 <div className="category">
-                  <Link to={`/pokemon/${winner.id}/base`}>Base:</Link>
+                  <Link to={`/pokemon/${result[0].id}/base`}>Base:</Link>
                   <div>
-                    <span>HP: {winner.base.HP}</span>
-                    <span>Attack: {winner.base.Attack}</span>
-                    <span>Defense: {winner.base.Defense}</span>
-                    <span>Sp. Attack: {winner.base['Sp. Attack']}</span>
-                    <span>Sp. Defense: {winner.base['Sp. Defense']}</span>
-                    <span>Speed: {winner.base.Speed}</span>
+                    <span>HP: {result[0].base.HP}</span>
+                    <span>Attack: {result[0].base.Attack}</span>
+                    <span>Defense: {result[0].base.Defense}</span>
+                    <span>Sp. Attack: {result[0].base['Sp. Attack']}</span>
+                    <span>Sp. Defense: {result[0].base['Sp. Defense']}</span>
+                    <span>Speed: {result[0].base.Speed}</span>
                   </div>
                 </div>
               </Card>}

@@ -15,7 +15,7 @@ const siderStyle = {
 function Pokedex() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner] = useOutletContext()
+    const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
 
     useEffect(() => setTitle('Pokedex'), [])
 
@@ -27,7 +27,7 @@ function Pokedex() {
             {fighters.length == 2 && <Button><NavLink to='/pokefight'>FIGHT!</NavLink></Button>}
         </Sider>
         <Content style={{height: '100%'}}>
-            <Outlet context={[setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner]}/>
+            <Outlet context={[setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult]}/>
         </Content>
       </Layout>
     );

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllFights, postFight} from '../controllers/leaderbord.js';
+import { getAllFights, postFight, deleteLeaderboard} from '../controllers/leaderbord.js';
 
 const leaderboardRouter = Router();
 
@@ -8,5 +8,8 @@ leaderboardRouter.route('/')
 
 leaderboardRouter.route('/save')
     .post(postFight)
+
+leaderboardRouter.route('/clear')
+    .delete(deleteLeaderboard)
 
 export default leaderboardRouter;

@@ -20,7 +20,7 @@ function PokeList() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [allPokemon, setAllPokemon] = useState([])
-    const [setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner] = useOutletContext()
+    const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
 
     const getData = () => {
         setLoading(true);
@@ -29,6 +29,7 @@ function PokeList() {
         .then(
             function(entries) {
                 entries.splice(5) // spliced for performance issues
+                console.log('GET to SERVER')
                 setAllPokemon(entries);
             }
         )

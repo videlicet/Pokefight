@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useOutletContext } from 'react-router-dom';
-import {  Layout, Card, Row, Col, Space, Table} from 'antd';
+import { Button, Layout, Card, Row, Col, Space, Table} from 'antd';
+import format from 'date-format'
 import '../App.css';
 
 const { Content } = Layout
@@ -23,7 +24,7 @@ const columns = [
   {
     title: 'Date',
     dataIndex: 'date',
-    key: 'date',
+    key: 'date'
   },
 ];
 
@@ -39,6 +40,7 @@ function Winner() {
       .then((res) => res.json())
       .then(
           function(entries) {
+              console.log('GET to SERVER')
               setLeaderBoard(entries);
           }
       )
@@ -56,12 +58,33 @@ function Winner() {
       setCrumbs([{ title: <NavLink to='/'>Home</NavLink> }, { title: <NavLink to='/leaderboard'>Leaderboard</NavLink> }])
     }, [])
 
+    let deleteData = {
+      method: 'DELETE',
+      credentials: "same-origin"
+    }
+
+    function onDeleteAll() {
+      setLoading(true)
+      fetch('http://localhost:4620/leaderboard/clear', deleteData)
+      .then((res) => res.json())
+      .then(
+        console.log('DELETE to SERVER')
+      )
+      .catch((e) => {
+        setError(e.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+    }
+
     return (
       <Content style={{height: "100%"}}>
         <Layout style={{width: '100%', position: 'relative', height: "100%"}}>
           <Row style={{height: "100%", overflow: "scroll"}}>
             <Col className="gutter-row" span={15} offset={5}>
-                <Table className="leaderboard" dataSource={leaderBoard} columns={columns} />;
+                <Table className="leaderboard" dataSource={leaderBoard} columns={columns} />
+                <Button onClick={onDeleteAll}>Clear Leaderboard</Button>
             </Col>
           </Row>
         </Layout>

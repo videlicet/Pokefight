@@ -32,17 +32,17 @@ function App() {
     const [title, setTitle] = useState('Welcome')
     const [fighters, setFighters] = useState([])
     const [crumbs, setCrumbs] = useState([])
-    const [winner, setWinner] = useState([])
+    const [result, setResult] = useState([])
 
     return (
       <Layout style={topLayoutStyle}>
           <Header style={headerStyle}>
-            <Title style={{margin: "0"}}><NavLink className="title" to="/">Pokefight</NavLink></Title>
+            <Title style={{margin: "0"}}><NavLink className="title" to="/">Pokéfight</NavLink></Title>
               <h2>{title}</h2>
             <Breadcrumb items={crumbs}/>
           </Header>
           <Layout style={midLayoutStyle}>
-            <Outlet context={[setTitle, fighters, setFighters, crumbs, setCrumbs, winner, setWinner]}/>
+            <Outlet context={[setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult]}/>
           </Layout>    
           <Footer style={footerStyle}>
             <NavLink to='about' className='title'>About</NavLink>

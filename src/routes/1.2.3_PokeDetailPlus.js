@@ -6,11 +6,11 @@ import '../App.css';
 const cardStyle = { margin: '3rem 0' };
 
 function PokeDetailPlus() {
+  const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [name, setName] = useState('');
     const [thisStat, setThisStat] = useState([])
-    const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
     let { id, info } = useParams();
 
     const getData = () => {

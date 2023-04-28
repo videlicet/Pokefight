@@ -3,17 +3,17 @@ import { NavLink, useOutletContext, useNavigate} from 'react-router-dom';
 import { Layout, Button, Card, Row, Col} from 'antd';
 import '../App.css';
 
-const style = { margin: '3rem 0' };
+const cardStyle = { margin: '1rem 0' };
 
 const { Content } = Layout
 
 function PokeFight() {
+    const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const navigate = useNavigate();
-    const [loadingButton, setLoadingButton] = useState([])
-    const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
     const [images, setImages] = useState([]);
+    const [loadingButton, setLoadingButton] = useState([])
+    const navigate = useNavigate();
 
     const getData = () => {
         setLoading(true);
@@ -75,7 +75,7 @@ function PokeFight() {
                     <Col className="gutter-row" span={8} >
                         <Card 
                             cover={<img alt={e.name.english} src={images[j]}/>}
-                            title={e.name.english} hoverable='true' style={style}>
+                            title={e.name.english} hoverable='true' style={cardStyle}>
                             <div className="category">
                                     <span className="category-title">Type:</span>
                                     <div>{e.type.map((i, index) => <span key={index}>{i}</span>)}</div>
@@ -93,9 +93,9 @@ function PokeFight() {
                             </div>
                         </Card>
                     </Col>
-                    )}
+                )}
             </Row>
-            <Button type="primary" style={{position: "relative", width: "15%", left: "42.5%", top: "-50%"}} loading={loadingButton[0]} onClick={onFight} danger>FIGHT!</Button>
+            <Button type="primary" style={{position: "relative", width: "10%", left: "45%", top: "-50%", padding: "0rem"}} loading={loadingButton[0]} onClick={onFight} danger>FIGHT!</Button>
         </Layout>
       </Content>
     );

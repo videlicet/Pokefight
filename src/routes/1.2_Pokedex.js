@@ -6,11 +6,11 @@ import '../App.css';
 
 const { Content, Sider } = Layout
 
-const siderStyle = {
+let siderStyle = {
     padding: '2rem',
     textAlign: 'center',
     color: 'white',
-    backgroundColor: 'rgb(10, 40, 95)',
+    backgroundColor: 'rgb(10, 40, 95)'
   };
 
 function Pokedex() {
@@ -30,7 +30,8 @@ function Pokedex() {
 
     return (
         <Layout style={{height: '100%'}}>
-        <Sider className="fight-list" style={siderStyle} width='20%' >
+          {fighters.length != 0 && 
+        <Sider className="fight-list" style={siderStyle} width='20%'  >
             <h2>Your fighters:</h2>
               {fighters.length > 0 && fighters.map((e, index) => 
                 <div className="fighters" id={e.name.english}>
@@ -39,7 +40,7 @@ function Pokedex() {
                 </div>
               )}
             {fighters.length == 2 && <Button style={{marginTop: "3rem"}} type="primary" danger><NavLink to='/pokefight'>Go to Arena</NavLink></Button>}
-        </Sider>
+        </Sider>}
         <Content style={{height: '100%'}}>
             <Outlet context={[setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult]}/>
         </Content>

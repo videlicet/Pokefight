@@ -96,8 +96,8 @@ function Winner() {
                   </div>
                 </div>
               </Card>}
-              <div style={{display: "flex", justifyContent: "space-between"}}>
-                {!submitted && <Button loading={loadingButton[0]} onClick={onSubmit} style={{marginBottom: '2rem'}}>Submit to Leaderboard</Button>}
+              <div style={{display: "flex", justifyContent: "space-between", marginBottom: '2rem'}}>
+                {!submitted && <Button loading={loadingButton[0]} onClick={onSubmit}>Submit to Leaderboard</Button>}
                 <NavLink to='/leaderboard'><Button>See Leaderboard</Button></NavLink>
               </div>
             </Col>

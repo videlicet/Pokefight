@@ -45,7 +45,11 @@ function App() {
             <Outlet context={[setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult]}/>
           </Layout>    
           <Footer style={footerStyle}>
-            <NavLink to='about' className='title'>About</NavLink>
+            <ul className='nav'>
+              <li><NavLink to='pokedex' className='title'>Pokédex</NavLink></li>
+              <li><NavLink to='leaderboard' className='title'>Leaderboard</NavLink></li>
+              <li><NavLink to='about' className='title'>About</NavLink></li>
+            </ul>
           </Footer>
       </Layout>
     );

@@ -19,11 +19,22 @@ span {
 }
 
 .category {
+  font-weight: normal;
   margin: 0 0 1rem 0;
 }
 
-.fighter {
+.category-title {
+  font-weight: bold;
+}
+
+.fighters {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
   margin: 1rem;
+}
+
+.fighter {
+  margin-right: 1rem;
   padding: 0.5rem;
   background-color:rgb(55, 121, 108);
   border-radius: 15px;
@@ -48,6 +59,12 @@ span {
 
 a {
   font-weight: bold;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
 }
 
 .breadcrumbs > * {

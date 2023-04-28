@@ -46,7 +46,6 @@ function PokeList() {
         setCrumbs([{title: <NavLink to='/'>Home</NavLink> }, {title: <NavLink to='/pokedex'>Pokedex</NavLink> }])
     },[])   
 
-
     function onSearch(e) {
         setAllPokemon([allPokemon.find(i => i.name.english == e)]);
     }
@@ -79,11 +78,11 @@ function PokeList() {
                             <Link to={`/pokedex/${e.id}`} key={e.id}>
                                 <Card title={e.name.english} hoverable='true' style={cardStyle}>
                                     <div className="category">
-                                            <span>Type:</span>
+                                            <span className='category-title'>Type:</span>
                                             <div>{e.type.map((e, index) => <span key={index}>{e}</span>)}</div>
                                     </div>
                                     <div className="category">
-                                        <span>Base:</span>
+                                        <span className='category-title'>Base:</span>
                                         <div>
                                             <span>HP: {e.base.HP}</span>
                                             <span>Attack: {e.base.Attack}</span>

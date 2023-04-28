@@ -60,16 +60,16 @@ function Winner() {
               {Object.keys(result[0]).length > 0 &&
               <Card title={result[0].name.english} hoverable='true' style={cardStyle}>
                 <div className="category">
-                  <Link to={`/pokemon/${result[0].id}/name`}>Names:</Link>
+                  <span className="category-title">Names:</span>
                   <div>{Object.keys(result[0].name).map(key => <span>{key[0].toUpperCase()+key.slice(1)}: {result[0].name[key]}</span>)}</div>
                 </div>
                 <div className="category">
-                  <Link to={`/pokemon/${result[0].id}/type`}>Type:</Link>
+                  <span className="category-title">Type:</span>
                   <div>{result[0].type.map(e => <span>{e}</span>)}</div>
                 </div>
                 <div className="category">
-                  <Link to={`/pokemon/${result[0].id}/base`}>Base:</Link>
-                  <div>
+                  <span className="category-title">Base:</span>
+                  <div className="info">
                     <span>HP: {result[0].base.HP}</span>
                     <span>Attack: {result[0].base.Attack}</span>
                     <span>Defense: {result[0].base.Defense}</span>
@@ -79,7 +79,10 @@ function Winner() {
                   </div>
                 </div>
               </Card>}
-              <Button onClick={onSubmit} style={{marginBottom: '2rem'}}>Submit to Leaderboard</Button>
+              <div style={{display: "flex", justifyContent: "space-between"}}>
+                <Button onClick={onSubmit} style={{marginBottom: '2rem'}}>Submit to Leaderboard</Button>
+                <NavLink to='/leaderboard'><Button>See Leaderboard</Button></NavLink>
+              </div>
             </Col>
           </Row>
         </Layout>

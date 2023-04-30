@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllFights, postFight, deleteLeaderboard} from '../controllers/leaderbord.js';
+import { getAllFights, postFight, deleteLeaderboard } from '../controllers/leaderbord.js';
 
 const leaderboardRouter = Router();
 

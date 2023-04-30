@@ -10,9 +10,9 @@ export const getAllFights = async (req, res, next) => {
     try {
         console.log('GET to DATABASE')
         const fights = await Fights.find({}).exec();
-        res.status(200).json(fights); 
+        res.status(200).json(fights);
     } catch (error) {
-    next(error);
+        next(error);
     }
 };
 

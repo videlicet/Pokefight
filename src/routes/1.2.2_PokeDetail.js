@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useParams, useOutletContext } from 'react-router-dom';
-import { Layout, Card, Row, Col} from 'antd';
+import { Layout, Card, Row, Col } from 'antd';
 import '../App.css';
 
 const { Content } = Layout
@@ -8,70 +8,71 @@ const { Content } = Layout
 const style = { margin: '3rem 0' };
 
 function PokeDetail() {
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
-    const [thisPokemon, setThisPokemon] = useState([])
-    const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
-    const [image, setImage] = useState([]);
-    let { id } = useParams();
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [thisPokemon, setThisPokemon] = useState([])
+  const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
+  const [image, setImage] = useState([]);
+  let { id } = useParams();
 
-    const getData = () => {
-        setLoading(true);
-        fetch(`http://localhost:4620/pokemon/${id}`)
-        .then((res) => {
-          return res.json()})
-        .then(
-          function(entries) {
-            console.log(crumbs)
-              if (crumbs[2]?.title.props.children!==entries[0].name.english) {
-                setCrumbs(prev =>  [prev[0], prev[1], { title: <NavLink to={`http://localhost:3000/pokedex/${id}`}>{entries[0].name.english}</NavLink>}]
-                )
-              }
-              if (crumbs?.length > 3) {
-                setCrumbs(prev => [prev[0], prev[1], prev[2]])
-              }
-
-              const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-              fetch(url)
-                .then((res) => res.json())
-                .then((res) => {
-                    console.log(res.sprites.front_default)
-                    setImage(prev => [...prev, res.sprites.other['official-artwork'].front_default])
-                })
-                .catch((e) => {
-                    setError(e.message)
-                });
-
-              setTitle(`Details about ${entries[0].name.english}`);
-              setThisPokemon(entries[0]);
+  const getData = () => {
+    setLoading(true);
+    fetch(`http://localhost:4620/pokemon/${id}`)
+      .then((res) => {
+        return res.json()
+      })
+      .then(
+        function (entries) {
+          console.log(crumbs)
+          if (crumbs[2]?.title.props.children !== entries[0].name.english) {
+            setCrumbs(prev => [...prev.slice(0, 2), { title: <NavLink to={`http://localhost:3000/pokedex/${id}`}>{entries[0].name.english}</NavLink> }]
+            )
           }
-        )
-        .catch((e) => {
-          console.log(e.message);
-          setError(e.message);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-      }
-    
-      useEffect(() => {
-        getData()
-      },[])
+          if (crumbs?.length > 3) {
+            setCrumbs(prev => [...prev.slice(0, 3)])
+          }
 
-    return (
-    <Content style={{height: "100%"}}>
-      <Layout style={{width: '100%', position: 'relative', height: "100%"}}>
-        <Row style={{height: "100%", overflow: "scroll"}}>
+          const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+          fetch(url)
+            .then((res) => res.json())
+            .then((res) => {
+              console.log(res.sprites.front_default)
+              setImage(prev => [...prev, res.sprites.other['official-artwork'].front_default])
+            })
+            .catch((e) => {
+              setError(e.message)
+            });
+
+          setTitle(`Details about ${entries[0].name.english}`);
+          setThisPokemon(entries[0]);
+        }
+      )
+      .catch((e) => {
+        console.log(e.message);
+        setError(e.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
+  return (
+    <Content style={{ height: "100%" }}>
+      <Layout style={{ width: '100%', position: 'relative', height: "100%" }}>
+        <Row style={{ height: "100%", overflow: "scroll" }}>
           <Col className="gutter-row" span={10} offset={7}>
             {Object.keys(thisPokemon).length > 0 &&
-              <Card 
-                cover={<img alt={thisPokemon.name.english} src={image[0]}/>}
+              <Card
+                cover={<img alt={thisPokemon.name.english} src={image[0]} />}
                 title={thisPokemon.name.english} hoverable='true' style={style}
-             >
+              >
                 <div className="category">
                   <Link to={`/pokedex/${thisPokemon.id}/name`}>Names:</Link>
-                  <div>{Object.keys(thisPokemon.name).map(key => <span>{key[0].toUpperCase()+key.slice(1)}: {thisPokemon.name[key]}</span>)}</div>
+                  <div>{Object.keys(thisPokemon.name).map(key => <span>{key[0].toUpperCase() + key.slice(1)}: {thisPokemon.name[key]}</span>)}</div>
                 </div>
                 <div className="category">
                   <Link to={`/pokedex/${thisPokemon.id}/type`}>Type:</Link>
@@ -89,11 +90,11 @@ function PokeDetail() {
                   </div>
                 </div>
               </Card>}
-            </Col>
-          </Row>
-        </Layout>
-      </Content>
-    );
+          </Col>
+        </Row>
+      </Layout>
+    </Content>
+  );
 }
 
 export default PokeDetail;

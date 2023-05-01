@@ -37,7 +37,7 @@ function Winner() {
 
   const getData = () => {
     setLoading(true)
-    fetch('http://localhost:4620/leaderboard')
+    fetch('https://pokefight-server.onrender.com/leaderboard/') // when deploying locally 'http://localhost:4620/leaderboard/save'
       .then((res) => res.json())
       .then(
         function (entries) {

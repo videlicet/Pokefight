@@ -25,7 +25,7 @@ function PokeDetail() {
         function (entries) {
           console.log(crumbs)
           if (crumbs[2]?.title.props.children !== entries[0].name.english) {
-            setCrumbs(prev => [...prev.slice(0, 2), { title: <NavLink to={`http://localhost:3000/pokedex/${id}`}>{entries[0].name.english}</NavLink> }] // when deploying locally `http://localhost:4620/pokemon/${id}`
+            setCrumbs(prev => [...prev.slice(0, 2), { title: <NavLink to={`/pokedex/${id}`}>{entries[0].name.english}</NavLink> }]
             )
           }
           if (crumbs?.length > 3) {

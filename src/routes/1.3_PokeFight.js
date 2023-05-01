@@ -26,7 +26,6 @@ function PokeFight() {
         promises.push(fetch(urlSecondFighter).then((res) => res.json()));
 
         Promise.all(promises).then((res) => {
-            console.log(res[1].sprites.other['official-artwork'].front_default)
             setImages([res[0].sprites.other['official-artwork'].front_default, res[1].sprites.other['official-artwork'].front_default]);
         })
             .catch((e) => {

@@ -38,7 +38,7 @@ function Winner() {
   function onSubmit(event) {
     event.preventDefault()
     console.log('submit triggered')
-    fetch('https://pokefight-server.onrender.com/leaderboard/save', fetchData)     // when deploying locally 'http://localhost:4620/leaderboard/save'
+    fetch('https://pokefight-server.onrender.com/leaderboard/save', fetchData)  // when deploying locally 'http://localhost:4620/leaderboard/save'
       .then((res) => res.json())
       .then(
         function (entries) {

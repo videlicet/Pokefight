@@ -17,13 +17,10 @@ function PokeDetailPlus() {
     setLoading(true);
     fetch(`https://pokefight-server.onrender.com/pokemon/${id}`) // when deploying locally `http://localhost:4620/pokemon/${id}`
       .then((res) => {
-        console.log(`https://pokefight-server.onrender.com/pokemon/${id}`) // when deploying locally `http://localhost:4620/pokemon/${id}`
-        console.log(res)
         return res.json()
       })
       .then(
         function (entries) {
-          console.log(crumbs[3]?.title.props.to)
           if (crumbs[3]?.title.props.children !== entries[0].name.english) {
             setCrumbs(prev => [...prev.slice(0, 3), { title: <NavLink to={`http://localhost:3000/pokedex/${id}/${info}`}>{info[0].toUpperCase() + info.slice(1)}s</NavLink> }])
           }

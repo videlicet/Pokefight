@@ -27,7 +27,7 @@ function PokeList() {
 
     const getData = () => {
         setLoading(true);
-        fetch('https://pokefight-server.onrender.com') //'http://localhost:4620/pokemon'
+        fetch('https://pokefight-server.onrender.com/pokemon') // when deploying locally 'http://localhost:4620/pokemon'
             .then((res) => res.json())
             .then(
                 function (entries) {

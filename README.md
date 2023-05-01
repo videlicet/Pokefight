@@ -17,4 +17,4 @@ To start the frontend, run `$ npm run start`.
 
 To start the backend, run `$ npm run server`.
 
-In case you deploy on Netlify, add a `_redirects` file with no file extension to your build folder and add `/* /index.html 200` to it. This will prevent refreshing the deployed page from throwing a 404.
+In case you deploy on Netlify, copy the `_redirects` file in the root folder to your build folder. This will prevent refreshing the deployed page from throwing a 404.

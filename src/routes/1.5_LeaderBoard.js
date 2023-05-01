@@ -66,7 +66,7 @@ function Winner() {
 
   function onDeleteAll() {
     setLoading(true)
-    fetch('http://localhost:4620/leaderboard/clear', deleteData)
+    fetch('https://pokefight-server.onrender.com/leaderboard/clear', deleteData) // when deploying locally 'http://localhost:4620/leaderboard/clear'
       .then((res) => res.json())
       .then(
         console.log('DELETE to SERVER')

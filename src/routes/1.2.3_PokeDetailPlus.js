@@ -15,9 +15,9 @@ function PokeDetailPlus() {
 
   const getData = () => {
     setLoading(true);
-    fetch(`http://localhost:4620/pokemon/${id}`)
+    fetch(`https://pokefight-server.onrender.com/pokemon/${id}`) // when deploying locally `http://localhost:4620/pokemon/${id}`
       .then((res) => {
-        console.log(`http://localhost:4620/pokemon/${id}`)
+        console.log(`https://pokefight-server.onrender.com/pokemon/${id}`) // when deploying locally `http://localhost:4620/pokemon/${id}`
         console.log(res)
         return res.json()
       })

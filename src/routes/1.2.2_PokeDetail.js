@@ -17,7 +17,7 @@ function PokeDetail() {
 
   const getData = () => {
     setLoading(true);
-    fetch(`http://localhost:4620/pokemon/${id}`)
+    fetch(`https://pokefight-server.onrender.com/pokemon/${id}`) // when deploying locally `http://localhost:4620/pokemon/${id}`
       .then((res) => {
         return res.json()
       })
@@ -25,7 +25,7 @@ function PokeDetail() {
         function (entries) {
           console.log(crumbs)
           if (crumbs[2]?.title.props.children !== entries[0].name.english) {
-            setCrumbs(prev => [...prev.slice(0, 2), { title: <NavLink to={`http://localhost:3000/pokedex/${id}`}>{entries[0].name.english}</NavLink> }]
+            setCrumbs(prev => [...prev.slice(0, 2), { title: <NavLink to={`http://localhost:3000/pokedex/${id}`}>{entries[0].name.english}</NavLink> }] // when deploying locally `http://localhost:4620/pokemon/${id}`
             )
           }
           if (crumbs?.length > 3) {

@@ -9,7 +9,8 @@ const { Footer, Header } = Layout
 const topLayoutStyle = {
   border: '14px solid black',
   borderRadius: '65px',
-  overflow: 'hidden'
+  overflow: 'hidden',
+  margin: '1rem'
 }
 
 const midLayoutStyle = {

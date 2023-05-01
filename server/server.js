@@ -12,7 +12,7 @@ import errorHandler from './middlewares/errorHandler.js';
 const port = 4620;
 const app = express();
 
-mongoose.connect(db_URL);
+mongoose.connect( process.env.DB_URL || db_URL);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 

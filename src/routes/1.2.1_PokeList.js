@@ -28,7 +28,7 @@ function PokeList() {
 
     const getData = () => {
         setLoading(true);
-        fetch(`https:/${URL_SERVER_DOMAIN}/pokemon`)
+        fetch(`https://${URL_SERVER_DOMAIN}/pokemon`)
             .then((res) => res.json())
             .then(
                 function (entries) {

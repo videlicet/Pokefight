@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useParams, useOutletContext } from 'react-router-dom';
 import { Layout, Card, Row, Col } from 'antd';
+import URL_SERVER_DOMAIN from '../URL_SERVER_DOMAIN.js';
 import '../App.css';
 
 const { Content } = Layout
 
-const style = { margin: '3rem 0' };
+const cardStyle = { margin: '3rem 0' };
 
 function PokeDetail() {
   const [loading, setLoading] = useState(true)
@@ -13,11 +14,11 @@ function PokeDetail() {
   const [thisPokemon, setThisPokemon] = useState([])
   const [setTitle, fighters, setFighters, crumbs, setCrumbs, result, setResult] = useOutletContext()
   const [image, setImage] = useState([]);
-  let { id } = useParams();
+  const { id } = useParams();
 
   const getData = () => {
     setLoading(true);
-    fetch(`https://pokefight-server.onrender.com/pokemon/${id}`) // when deploying locally `http://localhost:4620/pokemon/${id}`
+    fetch(`https://${URL_SERVER_DOMAIN}/pokemon/${id}`)
       .then((res) => {
         return res.json()
       })
@@ -68,7 +69,7 @@ function PokeDetail() {
             {Object.keys(thisPokemon).length > 0 &&
               <Card
                 cover={<img alt={thisPokemon.name.english} src={image[0]} />}
-                title={thisPokemon.name.english} hoverable='true' style={style}
+                title={thisPokemon.name.english} hoverable='true' style={cardStyle}
               >
                 <div className="category">
                   <Link to={`/pokedex/${thisPokemon.id}/name`}>Names:</Link>

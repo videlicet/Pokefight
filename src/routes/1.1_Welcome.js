@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, Link, useParams, useOutletContext } from 'react-router-dom';
-import { Button, ConfigProvider, Layout, theme, Card, Row, Col, Typography } from 'antd';
+import { NavLink, useOutletContext } from 'react-router-dom';
+import { Button, Row, Col } from 'antd';
 import '../App.css';
-
-const { Title } = Typography;
-
-const style = { margin: '1rem 0' };
 
 function Welcome() {
   const [loading, setLoading] = useState(true)

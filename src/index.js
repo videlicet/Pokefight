@@ -42,7 +42,6 @@ const router = createBrowserRouter([
           }
         ]
       },
-
       {
         path: "/pokefight",
         element: <PokeFight />,

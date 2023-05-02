@@ -1,25 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { NavLink, Link, useOutletContext } from 'react-router-dom';
-import { Button, Layout, Card, Row, Col, Space, Table } from 'antd';
-import format from 'date-format'
+import React, { useState, useEffect } from 'react';
+import { NavLink, useOutletContext } from 'react-router-dom';
+import { Button, Layout, Row, Col, Table } from 'antd';
 import '../App.css';
+import URL_SERVER_DOMAIN from '../URL_SERVER_DOMAIN.js';
 
 const { Content } = Layout
-
-const cardStyle = { margin: '1rem 0' }
 
 const columns = [
   {
     title: 'Winner',
     dataIndex: 'winner',
     key: 'winner'
-    //render: (text) => <a>{text}</a>
   },
   {
     title: 'Loser',
     dataIndex: 'loser',
     key: 'loser'
-    //render: (text) => <a>{text}</a>
   },
   {
     title: 'Date',
@@ -37,7 +33,7 @@ function Winner() {
 
   const getData = () => {
     setLoading(true)
-    fetch('https://pokefight-server.onrender.com/leaderboard/') // when deploying locally 'http://localhost:4620/leaderboard/save'
+    fetch(`https://${URL_SERVER_DOMAIN}/leaderboard/`)
       .then((res) => res.json())
       .then(
         function (entries) {
@@ -66,7 +62,7 @@ function Winner() {
 
   function onDeleteAll() {
     setLoading(true)
-    fetch('https://pokefight-server.onrender.com/leaderboard/clear', deleteData) // when deploying locally 'http://localhost:4620/leaderboard/clear'
+    fetch(`https://${URL_SERVER_DOMAIN}/leaderboard/clear`, deleteData)
       .then((res) => res.json())
       .then(
         console.log('DELETE to SERVER')

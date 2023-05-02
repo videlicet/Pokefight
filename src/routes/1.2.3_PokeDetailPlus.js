@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useParams, useOutletContext } from 'react-router-dom';
+import URL_SERVER_DOMAIN from '../URL_SERVER_DOMAIN.js';
 import { Card, Row, Col } from 'antd';
 import '../App.css';
 
@@ -15,14 +16,14 @@ function PokeDetailPlus() {
 
   const getData = () => {
     setLoading(true);
-    fetch(`https://pokefight-server.onrender.com/pokemon/${id}`) // when deploying locally `http://localhost:4620/pokemon/${id}`
+    fetch(`https://${URL_SERVER_DOMAIN}/pokemon/${id}`)
       .then((res) => {
         return res.json()
       })
       .then(
         function (entries) {
           if (crumbs[3]?.title.props.children !== entries[0].name.english) {
-            setCrumbs(prev => [...prev.slice(0, 3), { title: <NavLink to={`http://localhost:3000/pokedex/${id}/${info}`}>{info[0].toUpperCase() + info.slice(1)}s</NavLink> }])
+            setCrumbs(prev => [...prev.slice(0, 3), { title: <NavLink to={`/pokedex/${id}/${info}`}>{info[0].toUpperCase() + info.slice(1)}s</NavLink> }])
           }
           setTitle(`${entries[0].name.english}'s ${info}s `);
           setName(entries[0].name.english);

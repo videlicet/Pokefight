@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, Link, useOutletContext } from 'react-router-dom';
+import { NavLink, useOutletContext } from 'react-router-dom';
 import { Button, Layout, Card, Row, Col } from 'antd';
+import URL_SERVER_DOMAIN from '../URL_SERVER_DOMAIN.js';
 import '../App.css';
 
 const { Content } = Layout
@@ -38,7 +39,7 @@ function Winner() {
   function onSubmit(event) {
     event.preventDefault()
     console.log('submit triggered')
-    fetch('https://pokefight-server.onrender.com/leaderboard/save', fetchData)  // when deploying locally 'http://localhost:4620/leaderboard/save'
+    fetch(`https://${URL_SERVER_DOMAIN}/leaderboard/save`, fetchData)
       .then((res) => res.json())
       .then(
         function (entries) {

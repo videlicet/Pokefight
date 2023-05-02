@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useOutletContext } from 'react-router-dom';
-import { Button, Layout, Card, Row, Col, Input, Space, Spin } from 'antd';
+import { Button, Layout, Card, Row, Col, Input, Space } from 'antd';
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons'
+import URL_SERVER_DOMAIN from '../URL_SERVER_DOMAIN.js';
 import '../App.css';
 
 const { Content } = Layout
@@ -27,7 +28,7 @@ function PokeList() {
 
     const getData = () => {
         setLoading(true);
-        fetch('https://pokefight-server.onrender.com/pokemon') // when deploying locally 'http://localhost:4620/pokemon'
+        fetch(`https:/${URL_SERVER_DOMAIN}/pokemon`)
             .then((res) => res.json())
             .then(
                 function (entries) {
@@ -66,10 +67,9 @@ function PokeList() {
 
     function onSearch(e) {
         if (e) {
-            console.log(e)
             let found = [allPokemon.find(i => e.toLowerCase() === i?.name.english.toLowerCase())];
             console.log(found)
-            found[0] == undefined ? setNothingStyle({ display: "block" }) : setNothingStyle({ display: "none" })
+            found[0] === undefined ? setNothingStyle({ display: "block" }) : setNothingStyle({ display: "none" })
             return found[0] != undefined ? setAllPokemon(found) : getData();
         } else {
             setNothingStyle({ display: "none" })

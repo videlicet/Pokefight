@@ -8,7 +8,7 @@ A small SPA for Pokébouts.
 
 The <a href="https://github.com/videlicet/Pokefight-Server" target="_blank">server</a> is deployed on render. It can take up to one minute until it respondes if it has been idling. 
 
-The number of browsable pokékmon is reduced to the first generation due to performance issues with reading from the JSON file.
+The number of browsable pokémon is reduced to the first generation to improve performance.
 
 ## Acknowledgements
 

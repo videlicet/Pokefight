@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useOutletContext } from 'react-router-dom';
-import { Button, Layout, Card, Row, Col, Input, Space } from 'antd';
+import { Button, Layout, Card, Row, Col, Input, Space, Spin } from 'antd';
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons'
 import URL_SERVER_DOMAIN from '../URL_SERVER_DOMAIN.js';
 import '../App.css';
@@ -32,7 +32,7 @@ function PokeList() {
             .then((res) => res.json())
             .then(
                 function (entries) {
-                    entries.splice(10) // spliced for performance issues
+                    entries.splice(151) // spliced for performance issues
                     entries.forEach(e => {
                         const url = `https://pokeapi.co/api/v2/pokemon/${e.id}`;
                         fetch(url)
@@ -67,10 +67,38 @@ function PokeList() {
 
     function onSearch(e) {
         if (e) {
-            let found = [allPokemon.find(i => e.toLowerCase() === i?.name.english.toLowerCase())];
-            console.log(found)
-            found[0] === undefined ? setNothingStyle({ display: "block" }) : setNothingStyle({ display: "none" })
-            return found[0] != undefined ? setAllPokemon(found) : getData();
+            fetch(`https://${URL_SERVER_DOMAIN}/pokemon`)
+            .then((res) => res.json())
+            .then(
+                function (entries) {
+                    entries.splice(151) // spliced for performance issues
+                    entries.forEach(e => {
+                        const url = `https://pokeapi.co/api/v2/pokemon/${e.id}`;
+                        fetch(url)
+                            .then((res) => res.json())
+                            .then((res) => {
+                                let el = {
+                                    id: e.id,
+                                    url: res.sprites.other['official-artwork'].front_default
+                                }
+                                setImages(prev => ([...prev, el]))
+                            })
+                            .catch((e) => {
+                                setError(e.message)
+                            });
+                    })
+                    console.log('GET to SERVER')
+                    let found = [entries.find(i => e.toLowerCase() === i?.name.english.toLowerCase())];
+                    found[0] === undefined ? setNothingStyle({ display: "block" }) : setNothingStyle({ display: "none" })
+                    return found[0] != undefined ? setAllPokemon(found) : setAllPokemon([]);
+                }
+            )
+            .catch((e) => {
+                setError(e.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
         } else {
             setNothingStyle({ display: "none" })
             return getData()
@@ -102,7 +130,14 @@ function PokeList() {
                 </Space>
                 <Row style={{ margin: "4rem 0 0 0", height: "100%", overflow: "scroll" }}>
                     <Col className="gutter-row" span={10} offset={7}>
-                        <div style={nothingStyle}>Nothing found.</div>
+                        <Row>
+                            <Col className="gutter-row" style={nothingStyle} span={15} offset={5}>
+                                <div className="winner">Nothing found.</div>
+                            </Col>
+                        </Row>
+                        {loading === true && <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "3rem"}}>
+                            <Spin size="large" />
+                        </div>}
                         {allPokemon.length > 0 && allPokemon[0] != undefined && allPokemon.map((e, i) =>
                             <div className="card" id={e?.name?.english}>
                                 <Link to={`/pokedex/${e?.id}`} >
